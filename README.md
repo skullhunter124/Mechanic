@@ -91,3 +91,5 @@ This game was built as a text-based simulation focusing on:
 ---
 
 *A small garage. The smell of oil and old coffee. A radio plays somewhere.*
+## License
+This project is licensed under the MIT License - see the LICENSE file for details
