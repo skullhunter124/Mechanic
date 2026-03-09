@@ -17,23 +17,32 @@ const Engine = {
     advanceTime(state, slots = 1) {
         const timesOfDay = ['morning', 'afternoon', 'evening'];
         let currentIndex = timesOfDay.indexOf(state.timeOfDay);
-        let newDay = state.day;
         
         for (let i = 0; i < slots; i++) {
             currentIndex++;
+            // Don't wrap around - cap at evening
             if (currentIndex >= timesOfDay.length) {
-                currentIndex = 0;
-                newDay++;
+                currentIndex = timesOfDay.length - 1;
             }
         }
         
         state.timeOfDay = timesOfDay[currentIndex];
-        state.day = newDay;
         
-        // New day processing
-        if (newDay > state.day - slots) {
-            state = this.processNewDay(state);
-        }
+        return state;
+    },
+    
+    /**
+     * End the current day and start a new one
+     * @param {Object} state - Game state
+     * @returns {Object} Updated state
+     */
+    endDay(state) {
+        // Advance to next day
+        state.day++;
+        state.timeOfDay = 'morning';
+        
+        // Process new day events
+        state = this.processNewDay(state);
         
         return state;
     },

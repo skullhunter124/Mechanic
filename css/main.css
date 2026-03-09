@@ -627,12 +627,25 @@ body {
     color: var(--accent);
 }
 
-/* Game Controls */
-#game-controls {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    text-align: center;
+.upgrade-item .upgrade-cost .owned-label {
+    color: var(--correct);
+}
+
+.upgrade-item .upgrade-cost .rep-met {
+    color: var(--correct);
+}
+
+.upgrade-item .upgrade-cost .rep-required {
+    color: var(--wrong);
+}
+
+.upgrade-item.available {
+    border-color: var(--accent);
+    cursor: pointer;
+}
+
+.upgrade-item.available:hover {
+    background-color: rgba(224, 123, 57, 0.1);
 }
 
 .upgrade-item .upgrade-desc {
@@ -640,6 +653,14 @@ body {
     color: var(--text-dim);
     margin-top: 4px;
     line-height: 1.4;
+}
+
+/* Game Controls */
+#game-controls {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    text-align: center;
 }
 
 /* ═══════════════════════════════════════════

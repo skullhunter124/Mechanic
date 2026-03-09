@@ -201,17 +201,28 @@ const Game = {
      * Show wait/advance time button
      */
     async showWaitButton() {
-        UI.showButtons([
-            {
+        const buttons = [];
+        
+        // If it's evening, show "end day" button
+        if (this.state.timeOfDay === 'evening') {
+            buttons.push({
+                text: 'end day',
+                onClick: () => this.endDay(),
+                options: { className: 'primary' }
+            });
+        } else {
+            buttons.push({
                 text: 'wait',
                 onClick: () => this.advanceTime(),
                 options: { className: 'primary' }
-            }
-        ]);
+            });
+        }
+        
+        UI.showButtons(buttons);
     },
 
     /**
-     * Advance time
+     * Advance time (within the same day)
      */
     async advanceTime() {
         UI.clearActions();
@@ -219,10 +230,43 @@ const Game = {
         UI.updateAll(this.state);
         Storage.save(this.state);
         
-        // Check for leaving cars
+        this.phase = 'idle';
+        this.gameLoop();
+    },
+    
+    /**
+     * End the current day and start a new one
+     */
+    async endDay() {
+        UI.clearActions();
+        
+        await UI.printLine('closing up for the day...', 'system');
+        
+        this.state = Engine.endDay(this.state);
+        UI.updateAll(this.state);
+        Storage.save(this.state);
+        
+        // Check for leaving cars (patience ran out)
         const leavingCars = this.state.waitingCars.filter(c => c.customer.patience <= 0);
         for (const car of leavingCars) {
             await UI.printLines(car.outcomes.timeout.dialogue, 'outcome-bad');
+        }
+        
+        // Remove leaving cars
+        this.state.waitingCars = this.state.waitingCars.filter(c => c.customer.patience > 0);
+        UI.updateWaitingCars(this.state.waitingCars);
+        
+        // Check for game over
+        if (this.state.gameOver) {
+            this.handleGameOver();
+            return;
+        }
+        
+        await UI.printLine(`day ${this.state.day}. ${this.state.timeOfDay}.`, 'time-pass');
+        
+        // Check rent warning
+        if (this.state.rentDueIn <= 2) {
+            await UI.printLine(`rent is due in ${this.state.rentDueIn} day${this.state.rentDueIn > 1 ? 's' : ''}.`, 'system warning');
         }
         
         this.phase = 'idle';
@@ -608,9 +652,41 @@ const Game = {
      * Wait for parts to arrive
      */
     async waitForParts(partIds) {
-        UI.showButtons([
-            {
-                text: 'advance time',
+        const buttons = [];
+        
+        // If it's evening, show "end day" button
+        if (this.state.timeOfDay === 'evening') {
+            buttons.push({
+                text: 'end day',
+                onClick: async () => {
+                    UI.clearActions();
+                    
+                    await UI.printLine('closing up for the day...', 'system');
+                    
+                    this.state = Engine.endDay(this.state);
+                    UI.updateAll(this.state);
+                    Storage.save(this.state);
+                    
+                    // Check for game over
+                    if (this.state.gameOver) {
+                        this.handleGameOver();
+                        return;
+                    }
+                    
+                    // Check if parts arrived
+                    if (Engine.partsAvailable(this.state, partIds)) {
+                        await UI.printLine('parts arrived overnight.', 'action');
+                        await this.completeRepair(partIds);
+                    } else {
+                        await UI.printLine(`still waiting for parts... day ${this.state.day}.`, 'system');
+                        this.waitForParts(partIds);
+                    }
+                },
+                options: { className: 'primary' }
+            });
+        } else {
+            buttons.push({
+                text: 'wait',
                 onClick: async () => {
                     UI.clearActions();
                     this.state = Engine.advanceTime(this.state, 1);
@@ -627,8 +703,10 @@ const Game = {
                     }
                 },
                 options: { className: 'primary' }
-            }
-        ]);
+            });
+        }
+        
+        UI.showButtons(buttons);
     },
 
     /**

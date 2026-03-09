@@ -615,10 +615,11 @@ const UI = {
             const owned = state.garage[upgrade.stateKey];
             const canAfford = state.money >= upgrade.cost;
             const hasRep = state.reputation >= (upgrade.requiresReputation || 0);
+            const repRequired = upgrade.requiresReputation || 0;
             
-            // Only show upgrades that are owned OR can be afforded
-            if (!owned && !canAfford) {
-                return; // Skip this upgrade entirely
+            // Show upgrades that are owned OR can be afforded OR locked by reputation
+            if (!owned && !canAfford && !hasRep) {
+                return; // Skip if can't afford AND don't have rep
             }
             
             const item = document.createElement('div');
@@ -628,18 +629,41 @@ const UI = {
                 item.classList.add('owned');
             } else if (!hasRep) {
                 item.classList.add('locked');
+            } else if (canAfford) {
+                item.classList.add('available');
+            }
+            
+            // Build cost/reputation display
+            let costDisplay = '';
+            if (owned) {
+                costDisplay = '<span class="owned-label">✓ owned</span>';
+            } else {
+                const parts = [];
+                parts.push(`€${upgrade.cost}`);
+                if (repRequired > 0) {
+                    if (hasRep) {
+                        parts.push(`<span class="rep-met">rep ${repRequired}✓</span>`);
+                    } else {
+                        parts.push(`<span class="rep-required">rep ${repRequired} required</span>`);
+                    }
+                }
+                costDisplay = parts.join(' • ');
             }
             
             item.innerHTML = `
                 <div class="upgrade-name">${upgrade.name}</div>
-                <div class="upgrade-cost">${owned ? 'owned' : `€${upgrade.cost}`}</div>
-                ${!owned && upgrade.description ? `<div class="upgrade-desc">${upgrade.description}</div>` : ''}
+                <div class="upgrade-cost">${costDisplay}</div>
+                ${upgrade.description ? `<div class="upgrade-desc">${upgrade.description}</div>` : ''}
             `;
             
+            // Only allow click if not owned, can afford, and has reputation
             if (!owned && canAfford && hasRep) {
+                item.style.cursor = 'pointer';
                 item.addEventListener('click', () => {
                     onPurchase(upgrade);
                 });
+            } else if (!owned) {
+                item.style.cursor = 'not-allowed';
             }
             
             this.elements.upgradesList.appendChild(item);
