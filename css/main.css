@@ -323,11 +323,49 @@ body {
 }
 
 /* Parts Selection */
+.category-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.category-btn {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    opacity: 0.6;
+}
+
+.category-btn.active {
+    opacity: 1;
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.category-btn:hover {
+    opacity: 0.9;
+}
+
+.parts-wrapper {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.parts-category {
+    display: none;
+}
+
+.parts-category.active {
+    display: block;
+}
+
 .parts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
-    margin: 12px 0;
+    margin: 8px 0;
 }
 
 .part-option {

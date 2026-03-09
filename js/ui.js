@@ -279,7 +279,7 @@ const UI = {
     },
 
     /**
-     * Show parts selection grid
+     * Show parts selection grid organized by category
      * @param {Array} parts - Available parts
      * @param {Function} onConfirm - Callback with selected parts
      */
@@ -288,47 +288,132 @@ const UI = {
         
         const selectedParts = new Set();
         
-        // Create parts grid
-        const grid = document.createElement('div');
-        grid.className = 'parts-grid';
-        
+        // Group parts by category
+        const categorizedParts = {};
         parts.forEach(part => {
-            const option = document.createElement('label');
-            option.className = 'part-option';
-            option.innerHTML = `
-                <input type="checkbox" value="${part.id}">
-                <span class="part-name">${part.name}</span>
-                <span class="part-cost">€${part.cost}</span>
-            `;
-            
-            option.querySelector('input').addEventListener('change', (e) => {
-                if (e.target.checked) {
-                    selectedParts.add(part.id);
-                    option.classList.add('selected');
-                } else {
-                    selectedParts.delete(part.id);
-                    option.classList.remove('selected');
-                }
-            });
-            
-            grid.appendChild(option);
+            const cat = part.category || 'misc';
+            if (!categorizedParts[cat]) {
+                categorizedParts[cat] = [];
+            }
+            categorizedParts[cat].push(part);
         });
         
-        this.elements.actionArea.appendChild(grid);
+        // Create container
+        const container = document.createElement('div');
+        container.className = 'parts-container';
+        
+        // Create category buttons first
+        const categoryNav = document.createElement('div');
+        categoryNav.className = 'category-nav';
+        
+        const categories = typeof PART_CATEGORIES !== 'undefined' ? PART_CATEGORIES : [
+            { id: 'misc', name: 'Parts', icon: '●' }
+        ];
+        
+        categories.forEach(cat => {
+            if (!categorizedParts[cat.id]) return;
+            
+            const catBtn = document.createElement('button');
+            catBtn.className = 'btn category-btn';
+            catBtn.textContent = `${cat.icon} ${cat.name}`;
+            catBtn.dataset.category = cat.id;
+            
+            catBtn.addEventListener('click', () => {
+                // Remove active from all
+                categoryNav.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                catBtn.classList.add('active');
+                
+                // Show only this category's parts
+                container.querySelectorAll('.parts-category').forEach(c => c.classList.remove('active'));
+                const catContent = container.querySelector(`[data-category-content="${cat.id}"]`);
+                if (catContent) catContent.classList.add('active');
+            });
+            
+            categoryNav.appendChild(catBtn);
+        });
+        
+        container.appendChild(categoryNav);
+        
+        // Create parts sections for each category
+        const partsWrapper = document.createElement('div');
+        partsWrapper.className = 'parts-wrapper';
+        
+        categories.forEach(cat => {
+            if (!categorizedParts[cat.id]) return;
+            
+            const catSection = document.createElement('div');
+            catSection.className = 'parts-category';
+            catSection.dataset.categoryContent = cat.id;
+            
+            const grid = document.createElement('div');
+            grid.className = 'parts-grid';
+            
+            categorizedParts[cat.id].forEach(part => {
+                const option = document.createElement('label');
+                option.className = 'part-option';
+                option.innerHTML = `
+                    <input type="checkbox" value="${part.id}">
+                    <span class="part-name">${part.name}</span>
+                    <span class="part-cost">€${part.cost}</span>
+                `;
+                
+                option.querySelector('input').addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        selectedParts.add(part.id);
+                        option.classList.add('selected');
+                    } else {
+                        selectedParts.delete(part.id);
+                        option.classList.remove('selected');
+                    }
+                    updateConfirmButton();
+                });
+                
+                grid.appendChild(option);
+            });
+            
+            catSection.appendChild(grid);
+            partsWrapper.appendChild(catSection);
+        });
+        
+        container.appendChild(partsWrapper);
+        
+        // Select first category by default
+        const firstBtn = categoryNav.querySelector('.category-btn');
+        if (firstBtn) {
+            firstBtn.classList.add('active');
+            const firstContent = container.querySelector('.parts-category');
+            if (firstContent) firstContent.classList.add('active');
+        }
+        
+        this.elements.actionArea.appendChild(container);
+        
+        // Button container
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'mt-2';
         
         // Confirm button
         const confirmBtn = this.createButton('confirm repair', () => {
             onConfirm(Array.from(selectedParts));
-        }, { className: 'primary' });
-        
-        this.elements.actionArea.appendChild(confirmBtn);
+        }, { className: 'primary', disabled: true });
+        confirmBtn.id = 'confirm-repair-btn';
+        buttonContainer.appendChild(confirmBtn);
         
         // Cancel button
         const cancelBtn = this.createButton('cancel', () => {
-            this.showDiagnostics(currentDiagnostics, currentOnSelect);
-        });
+            this.clearActions();
+            if (typeof Game !== 'undefined') {
+                Game.phase = 'idle';
+                Game.gameLoop();
+            }
+        }, {});
+        buttonContainer.appendChild(cancelBtn);
         
-        this.elements.actionArea.appendChild(cancelBtn);
+        this.elements.actionArea.appendChild(buttonContainer);
+        
+        // Update confirm button state
+        function updateConfirmButton() {
+            confirmBtn.disabled = selectedParts.size === 0;
+        }
     },
 
     // ═══════════════════════════════════════════
