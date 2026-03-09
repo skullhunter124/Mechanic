@@ -396,6 +396,11 @@ const Game = {
         UI.clearActions();
         
         const selectedParts = new Set();
+        const selectedPartsData = new Map(); // Store part data for cart summary
+        
+        // Create a lookup map for parts
+        const partsLookup = new Map();
+        parts.forEach(part => partsLookup.set(part.id, part));
         
         // Group parts by category
         const categorizedParts = {};
@@ -468,11 +473,14 @@ const Game = {
                 option.querySelector('input').addEventListener('change', (e) => {
                     if (e.target.checked) {
                         selectedParts.add(part.id);
+                        selectedPartsData.set(part.id, part);
                         option.classList.add('selected');
                     } else {
                         selectedParts.delete(part.id);
+                        selectedPartsData.delete(part.id);
                         option.classList.remove('selected');
                     }
+                    updateCartSummary();
                     updateConfirmButton();
                 });
                 
@@ -494,6 +502,23 @@ const Game = {
         }
         
         UI.elements.actionArea.appendChild(container);
+        
+        // Cart summary section
+        const cartSummary = document.createElement('div');
+        cartSummary.className = 'cart-summary';
+        cartSummary.innerHTML = `
+            <div class="cart-header">
+                <span class="cart-title">🛒 Cart</span>
+                <span class="cart-count">(0 items)</span>
+            </div>
+            <div class="cart-items"></div>
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="cart-total-amount">€0</span>
+            </div>
+        `;
+        
+        UI.elements.actionArea.appendChild(cartSummary);
         
         // Button container
         const buttonContainer = document.createElement('div');
@@ -517,6 +542,34 @@ const Game = {
         // Update confirm button state
         function updateConfirmButton() {
             confirmBtn.disabled = selectedParts.size === 0;
+        }
+        
+        // Update cart summary
+        function updateCartSummary() {
+            const cartItems = cartSummary.querySelector('.cart-items');
+            const cartCount = cartSummary.querySelector('.cart-count');
+            const cartTotal = cartSummary.querySelector('.cart-total-amount');
+            
+            // Clear current items
+            cartItems.innerHTML = '';
+            
+            let total = 0;
+            selectedPartsData.forEach((part, id) => {
+                total += part.cost;
+                const item = document.createElement('div');
+                item.className = 'cart-item';
+                item.innerHTML = `
+                    <span class="cart-item-name">${part.name}</span>
+                    <span class="cart-item-cost">€${part.cost}</span>
+                `;
+                cartItems.appendChild(item);
+            });
+            
+            cartCount.textContent = `(${selectedParts.size} item${selectedParts.size !== 1 ? 's' : ''})`;
+            cartTotal.textContent = `€${total}`;
+            
+            // Show/hide cart based on items
+            cartSummary.classList.toggle('has-items', selectedParts.size > 0);
         }
     },
 
