@@ -839,3 +839,222 @@ body {
 .mb-1 { margin-bottom: 8px; }
 .mb-2 { margin-bottom: 16px; }
 .mb-3 { margin-bottom: 24px; }
+
+/* ═══════════════════════════════════════════
+   Settings Button & Panel
+   ═══════════════════════════════════════════ */
+
+#settings-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--text-dim);
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#settings-btn:hover {
+    background: var(--border);
+    color: var(--text);
+    transform: rotate(30deg);
+}
+
+#settings-panel {
+    position: fixed;
+    top: 70px;
+    right: 16px;
+    width: 280px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    z-index: 99;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+#settings-panel:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.settings-header h2 {
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+#settings-close {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+#settings-close:hover {
+    color: var(--text);
+}
+
+.settings-content {
+    padding: 16px;
+}
+
+.settings-section {
+    margin-bottom: 20px;
+}
+
+.settings-section:last-child {
+    margin-bottom: 0;
+}
+
+.settings-section h3 {
+    font-size: 11px;
+    font-weight: normal;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+}
+
+.theme-options {
+    display: flex;
+    gap: 8px;
+}
+
+.theme-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-btn:hover {
+    transform: scale(1.1);
+}
+
+.theme-btn.active {
+    border-color: var(--text);
+}
+
+.theme-btn[data-theme="default"] { color: #e07b39; }
+.theme-btn[data-theme="green"] { color: #5a9c69; }
+.theme-btn[data-theme="blue"] { color: #5a8cc9; }
+.theme-btn[data-theme="purple"] { color: #9c5a9c; }
+.theme-btn[data-theme="red"] { color: #c95a5a; }
+.theme-btn[data-theme="cyan"] { color: #5ac9c9; }
+
+.settings-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.settings-toggle input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.toggle-label {
+    color: var(--text);
+}
+
+.speed-options {
+    display: flex;
+    gap: 8px;
+}
+
+.speed-btn {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.speed-btn:hover {
+    border-color: var(--text-dim);
+    color: var(--text);
+}
+
+.speed-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+}
+
+.settings-section .btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.settings-section .btn:last-child {
+    margin-bottom: 0;
+}
+
+/* ═══════════════════════════════════════════
+   Theme Variations
+   ═══════════════════════════════════════════ */
+
+[data-theme="green"] {
+    --accent: #5a9c69;
+}
+
+[data-theme="blue"] {
+    --accent: #5a8cc9;
+}
+
+[data-theme="purple"] {
+    --accent: #9c5a9c;
+}
+
+[data-theme="red"] {
+    --accent: #c95a5a;
+}
+
+[data-theme="cyan"] {
+    --accent: #5ac9c9;
+}

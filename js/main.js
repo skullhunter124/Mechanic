@@ -262,6 +262,9 @@ const Game = {
         this.state.waitingCars = this.state.waitingCars.filter(c => c.customer.patience > 0);
         UI.updateWaitingCars(this.state.waitingCars);
         
+        // Update upgrades display in case reputation changed
+        UI.renderUpgrades(UPGRADES, this.state, (u) => this.purchaseUpgrade(u));
+        
         // Check for game over
         if (this.state.gameOver) {
             this.handleGameOver();
@@ -855,6 +858,7 @@ const Game = {
         UI.updateReputation(this.state.reputation);
         UI.updateJobsCount(this.state.completedJobs);
         UI.updateCurrentJob(null);
+        UI.renderUpgrades(UPGRADES, this.state, (u) => this.purchaseUpgrade(u));
         
         // Play sound
         if (result.outcomeType === 'correct') {
@@ -890,6 +894,7 @@ const Game = {
         this.state = Engine.cancelJob(this.state);
         UI.updateCurrentJob(null);
         UI.updateReputation(this.state.reputation);
+        UI.renderUpgrades(UPGRADES, this.state, (u) => this.purchaseUpgrade(u));
         
         Storage.save(this.state);
         
@@ -945,6 +950,8 @@ const Game = {
             if (choice.effect.rentIncrease) {
                 this.state.rent += 50;
             }
+            // Update upgrades display in case new ones are now available
+            UI.renderUpgrades(UPGRADES, this.state, (u) => this.purchaseUpgrade(u));
         }
         
         // Print followup
