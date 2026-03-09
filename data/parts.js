@@ -3,6 +3,19 @@
    All parts needed for repairs
    ═══════════════════════════════════════════ */
 
+// Parts categories for organization
+const PART_CATEGORIES = [
+    { id: 'brakes', name: 'Brakes', icon: '◉' },
+    { id: 'engine', name: 'Engine', icon: '⚙' },
+    { id: 'electrical', name: 'Electrical', icon: '⚡' },
+    { id: 'suspension', name: 'Suspension', icon: '⬡' },
+    { id: 'transmission', name: 'Transmission', icon: '⟳' },
+    { id: 'exhaust', name: 'Exhaust', icon: '⋮' },
+    { id: 'climate', name: 'Climate', icon: '❄' },
+    { id: 'wheels', name: 'Wheels & Tyres', icon: '○' },
+    { id: 'misc', name: 'Miscellaneous', icon: '☐' }
+];
+
 const PARTS = [
     // ═══════════════════════════════════════════
     // Brakes
@@ -10,6 +23,7 @@ const PARTS = [
     {
         id: 'brake_pads_front',
         name: 'front brake pads',
+        category: 'brakes',
         cost: 35,
         deliveryDays: 1,
         commonStock: true
