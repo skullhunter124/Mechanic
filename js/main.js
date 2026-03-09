@@ -173,13 +173,16 @@ const Game = {
             return;
         }
         
-        // Check for waiting cars
-        if (this.state.waitingCars.length > 0) {
+        // Lift is free - check for set-aside jobs or waiting cars
+        const setAsideJobs = this.state.setAsideJobs || [];
+        const waitingCars = this.state.waitingCars || [];
+        
+        if (setAsideJobs.length > 0 || waitingCars.length > 0) {
             await this.promptStartJob();
             return;
         }
         
-        // No waiting cars, maybe a new customer arrives
+        // No waiting cars or set-aside jobs, maybe a new customer arrives
         if (Math.random() < 0.6) {
             const scenario = Engine.selectNextCustomer(this.state);
             if (scenario) {

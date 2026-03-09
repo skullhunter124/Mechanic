@@ -38,7 +38,7 @@ const UI = {
             // Garage panel
             garageDescription: document.getElementById('garage-description'),
             currentJob: document.getElementById('current-job'),
-            setAsideJobs: document.getElementById('set-aside-jobs'),
+            setAsideJobsSection: document.getElementById('set-aside-jobs'),
             setAsideList: document.getElementById('set-aside-list'),
             waitingList: document.getElementById('waiting-list'),
             timeOfDay: document.getElementById('time-of-day'),
@@ -542,14 +542,17 @@ const UI = {
      * @param {Array} jobs - Array of set-aside jobs
      */
     updateSetAsideJobs(jobs) {
-        if (!this.elements.setAsideJobs || !this.elements.setAsideList) return;
+        const container = document.getElementById('set-aside-jobs');
+        const list = document.getElementById('set-aside-list');
+        
+        if (!container || !list) return;
         
         if (!jobs || jobs.length === 0) {
-            this.elements.setAsideJobs.classList.add('hidden');
-            this.elements.setAsideList.innerHTML = '';
+            container.classList.add('hidden');
+            list.innerHTML = '';
         } else {
-            this.elements.setAsideJobs.classList.remove('hidden');
-            this.elements.setAsideList.innerHTML = jobs.map((job, index) => `
+            container.classList.remove('hidden');
+            list.innerHTML = jobs.map((job, index) => `
                 <li class="set-aside-job clickable" data-index="${index}">
                     ${job.customer.name}'s ${job.car.make}
                     <span class="job-status">(waiting)</span>
