@@ -323,6 +323,12 @@ body {
 }
 
 /* Parts Selection */
+.parts-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 .category-nav {
     display: flex;
     flex-wrap: wrap;
@@ -349,8 +355,28 @@ body {
 }
 
 .parts-wrapper {
-    max-height: 300px;
+    max-height: 250px;
     overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
+}
+
+/* Custom scrollbar for parts wrapper */
+.parts-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.parts-wrapper::-webkit-scrollbar-track {
+    background: var(--surface);
+}
+
+.parts-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+.parts-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--text-dim);
 }
 
 .parts-category {
@@ -376,15 +402,17 @@ body {
     border: 1px solid var(--border);
     cursor: pointer;
     transition: all 0.15s ease;
+    user-select: none;
 }
 
 .part-option:hover {
     border-color: var(--text-dim);
+    background-color: var(--surface);
 }
 
 .part-option.selected {
     border-color: var(--accent);
-    background-color: rgba(224, 123, 57, 0.1);
+    background-color: rgba(224, 123, 57, 0.15);
 }
 
 .part-option input {
@@ -394,11 +422,15 @@ body {
 .part-option .part-name {
     flex: 1;
     font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .part-option .part-cost {
     color: var(--text-dim);
     font-size: 0.8rem;
+    flex-shrink: 0;
 }
 
 /* ═══════════════════════════════════════════

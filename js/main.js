@@ -390,41 +390,110 @@ const Game = {
     },
 
     /**
-     * Show parts selection
+     * Show parts selection organized by category
      */
     async showPartsSelection(parts) {
         UI.clearActions();
         
         const selectedParts = new Set();
         
-        // Create parts grid
-        const grid = document.createElement('div');
-        grid.className = 'parts-grid';
-        
+        // Group parts by category
+        const categorizedParts = {};
         parts.forEach(part => {
-            const option = document.createElement('label');
-            option.className = 'part-option';
-            option.innerHTML = `
-                <input type="checkbox" value="${part.id}">
-                <span class="part-name">${part.name}</span>
-                <span class="part-cost">€${part.cost}</span>
-            `;
-            
-            option.querySelector('input').addEventListener('change', (e) => {
-                if (e.target.checked) {
-                    selectedParts.add(part.id);
-                    option.classList.add('selected');
-                } else {
-                    selectedParts.delete(part.id);
-                    option.classList.remove('selected');
-                }
-                updateConfirmButton();
-            });
-            
-            grid.appendChild(option);
+            const cat = part.category || 'misc';
+            if (!categorizedParts[cat]) {
+                categorizedParts[cat] = [];
+            }
+            categorizedParts[cat].push(part);
         });
         
-        UI.elements.actionArea.appendChild(grid);
+        // Create container
+        const container = document.createElement('div');
+        container.className = 'parts-container';
+        
+        // Create category navigation
+        const categoryNav = document.createElement('div');
+        categoryNav.className = 'category-nav';
+        
+        const categories = typeof PART_CATEGORIES !== 'undefined' ? PART_CATEGORIES : [
+            { id: 'misc', name: 'Parts', icon: '●' }
+        ];
+        
+        // Filter to only show categories that have parts
+        const availableCategories = categories.filter(cat => categorizedParts[cat.id]);
+        
+        availableCategories.forEach(cat => {
+            const catBtn = document.createElement('button');
+            catBtn.className = 'btn category-btn';
+            catBtn.textContent = `${cat.icon} ${cat.name}`;
+            catBtn.dataset.category = cat.id;
+            
+            catBtn.addEventListener('click', () => {
+                // Remove active from all
+                categoryNav.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                catBtn.classList.add('active');
+                
+                // Show only this category's parts
+                container.querySelectorAll('.parts-category').forEach(c => c.classList.remove('active'));
+                const catContent = container.querySelector(`[data-category-content="${cat.id}"]`);
+                if (catContent) catContent.classList.add('active');
+            });
+            
+            categoryNav.appendChild(catBtn);
+        });
+        
+        container.appendChild(categoryNav);
+        
+        // Create parts sections for each category
+        const partsWrapper = document.createElement('div');
+        partsWrapper.className = 'parts-wrapper';
+        
+        availableCategories.forEach(cat => {
+            const catSection = document.createElement('div');
+            catSection.className = 'parts-category';
+            catSection.dataset.categoryContent = cat.id;
+            
+            const grid = document.createElement('div');
+            grid.className = 'parts-grid';
+            
+            categorizedParts[cat.id].forEach(part => {
+                const option = document.createElement('label');
+                option.className = 'part-option';
+                option.innerHTML = `
+                    <input type="checkbox" value="${part.id}">
+                    <span class="part-name">${part.name}</span>
+                    <span class="part-cost">€${part.cost}</span>
+                `;
+                
+                option.querySelector('input').addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        selectedParts.add(part.id);
+                        option.classList.add('selected');
+                    } else {
+                        selectedParts.delete(part.id);
+                        option.classList.remove('selected');
+                    }
+                    updateConfirmButton();
+                });
+                
+                grid.appendChild(option);
+            });
+            
+            catSection.appendChild(grid);
+            partsWrapper.appendChild(catSection);
+        });
+        
+        container.appendChild(partsWrapper);
+        
+        // Select first category by default
+        const firstBtn = categoryNav.querySelector('.category-btn');
+        if (firstBtn) {
+            firstBtn.classList.add('active');
+            const firstContent = container.querySelector('.parts-category');
+            if (firstContent) firstContent.classList.add('active');
+        }
+        
+        UI.elements.actionArea.appendChild(container);
         
         // Button container
         const buttonContainer = document.createElement('div');
