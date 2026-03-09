@@ -285,6 +285,7 @@ const Game = {
         
         const job = this.state.currentJob;
         UI.updateCurrentJob(job);
+        UI.updateWaitingCars(this.state.waitingCars); // Update waiting list to remove the car
         Storage.save(this.state);
         
         // Print arrival dialogue
@@ -801,16 +802,35 @@ const Game = {
      * Handle game over
      */
     handleGameOver() {
-        const gameOverText = [
-            'the landlord changes the locks on a tuesday.',
-            'you stand outside for a minute.',
-            'then you go home.',
+        let reasonText = [];
+        
+        if (this.state.gameOverReason === 'rent') {
+            reasonText = [
+                'you couldn\'t pay the rent.',
+                'the landlord changes the locks on a tuesday.',
+                'you stand outside for a minute.',
+                'then you go home.',
+                '',
+                'game over - bankrupt'
+            ];
+        } else {
+            reasonText = [
+                'the landlord changes the locks on a tuesday.',
+                'you stand outside for a minute.',
+                'then you go home.',
+                '',
+                'game over'
+            ];
+        }
+        
+        const statsText = [
             '',
             `you lasted ${this.state.day} days.`,
-            `completed ${this.state.completedJobs} jobs.`
+            `completed ${this.state.completedJobs} jobs.`,
+            `earned €${this.state.totalEarnings || 0} total.`
         ];
         
-        UI.showGameOver(gameOverText);
+        UI.showGameOver([...reasonText, ...statsText]);
         this.isRunning = false;
     },
 

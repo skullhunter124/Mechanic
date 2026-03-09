@@ -304,6 +304,12 @@ body {
     border-color: var(--border);
 }
 
+.btn.btn-small {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    margin: 0;
+}
+
 /* Cost display on buttons */
 .btn .cost {
     color: var(--text-dim);
@@ -619,6 +625,14 @@ body {
 .upgrade-item .upgrade-cost {
     font-size: 0.75rem;
     color: var(--accent);
+}
+
+/* Game Controls */
+#game-controls {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    text-align: center;
 }
 
 .upgrade-item .upgrade-desc {

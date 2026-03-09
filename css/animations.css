@@ -6,7 +6,12 @@
    Text Typing Animation
    ═══════════════════════════════════════════ */
 
+/* Only animate new lines, keep existing lines visible */
 #log p {
+    opacity: 1;
+}
+
+#log p.new-line {
     opacity: 0;
     transform: translateY(4px);
     animation: fadeInLine 0.3s ease forwards;
@@ -19,12 +24,12 @@
     }
 }
 
-/* Staggered animation delay for multiple lines */
-#log p:nth-last-child(1) { animation-delay: 0ms; }
-#log p:nth-last-child(2) { animation-delay: 50ms; }
-#log p:nth-last-child(3) { animation-delay: 100ms; }
-#log p:nth-last-child(4) { animation-delay: 150ms; }
-#log p:nth-last-child(5) { animation-delay: 200ms; }
+/* Staggered animation delay for multiple new lines */
+#log p.new-line:nth-last-child(1) { animation-delay: 0ms; }
+#log p.new-line:nth-last-child(2) { animation-delay: 50ms; }
+#log p.new-line:nth-last-child(3) { animation-delay: 100ms; }
+#log p.new-line:nth-last-child(4) { animation-delay: 150ms; }
+#log p.new-line:nth-last-child(5) { animation-delay: 200ms; }
 
 /* ═══════════════════════════════════════════
    Button Fade In

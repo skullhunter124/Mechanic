@@ -141,14 +141,15 @@ const UI = {
         return new Promise(resolve => {
             setTimeout(() => {
                 const p = document.createElement('p');
-                p.className = className;
+                // Add new-line class for animation, keep existing classes
+                p.className = `new-line ${className}`.trim();
                 p.textContent = text;
                 
-                // Remove animation from previous last child
-                const lastChild = this.elements.log.lastElementChild;
-                if (lastChild) {
-                    lastChild.style.animation = 'none';
-                }
+                // Remove new-line class from previous lines after animation
+                const previousNewLines = this.elements.log.querySelectorAll('.new-line');
+                previousNewLines.forEach(el => {
+                    el.classList.remove('new-line');
+                });
                 
                 this.elements.log.appendChild(p);
                 this.scrollToBottom();
@@ -156,6 +157,11 @@ const UI = {
                 if (this.sounds.enabled && this.config.charDelay > 0) {
                     this.playSound('tick');
                 }
+                
+                // Remove new-line class after animation completes
+                setTimeout(() => {
+                    p.classList.remove('new-line');
+                }, 500);
                 
                 resolve();
             }, delay);
