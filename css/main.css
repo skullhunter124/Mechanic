@@ -1,0 +1,640 @@
+/* ═══════════════════════════════════════════
+   MECHANIC - Main Stylesheet
+   A text-based browser game
+   ═══════════════════════════════════════════ */
+
+/* CSS Variables */
+:root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-dim: #999;
+    --accent: #e07b39;
+    --correct: #5a9c69;
+    --wrong: #9c4a4a;
+    --warning: #d4a017;
+    
+    --font-mono: 'Courier New', 'IBM Plex Mono', Consolas, monospace;
+    --line-height: 1.7;
+    --letter-spacing: 0.02em;
+}
+
+/* Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Base */
+html {
+    font-size: 14px;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Selection */
+::selection {
+    background-color: var(--accent);
+    color: var(--bg);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-dim);
+}
+
+/* ═══════════════════════════════════════════
+   Layout - Three Columns
+   ═══════════════════════════════════════════ */
+
+#game-container {
+    display: grid;
+    grid-template-columns: 280px 1fr 240px;
+    gap: 0;
+    height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* Panel Base */
+#garage-panel,
+#log-panel,
+#status-panel {
+    padding: 24px 20px;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════
+   LEFT PANEL - The Garage
+   ═══════════════════════════════════════════ */
+
+#garage-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background-color: var(--surface);
+}
+
+#garage-description {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+}
+
+#garage-description p {
+    margin-bottom: 4px;
+}
+
+.static-text {
+    color: var(--text-dim);
+}
+
+#lift-status h3,
+#waiting-cars h3,
+#upgrades-section h3 {
+    font-size: 0.75rem;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+}
+
+#current-job {
+    font-style: italic;
+}
+
+#waiting-list {
+    list-style: none;
+}
+
+#waiting-list li {
+    padding: 4px 0;
+    font-size: 0.9rem;
+}
+
+#waiting-list li .patience {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-left: 8px;
+}
+
+#time-display {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+#time-of-day {
+    text-transform: capitalize;
+    color: var(--accent);
+}
+
+#day-counter {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+.warning {
+    color: var(--warning);
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+.warning.urgent {
+    color: var(--wrong);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ═══════════════════════════════════════════
+   CENTER PANEL - The Log
+   ═══════════════════════════════════════════ */
+
+#log-panel {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg);
+    overflow: hidden;
+    height: 100vh;
+}
+
+#log {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 16px;
+    padding-bottom: 20px;
+    scroll-behavior: smooth;
+}
+
+#log p {
+    margin-bottom: 8px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Log text styles */
+#log p.system {
+    color: var(--text);
+}
+
+#log p.arrival {
+    color: var(--text);
+}
+
+#log p.dialogue {
+    color: var(--text);
+    font-style: italic;
+}
+
+#log p.diagnostic {
+    color: var(--text-dim);
+}
+
+#log p.outcome-good {
+    color: var(--correct);
+}
+
+#log p.outcome-bad {
+    color: var(--wrong);
+}
+
+#log p.time-pass {
+    color: var(--text-dim);
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+}
+
+#log p.divider {
+    color: var(--border);
+    margin: 20px 0;
+    text-align: center;
+}
+
+#log p.action {
+    color: var(--accent);
+}
+
+/* Action Area */
+#action-area {
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    margin: 4px 8px 4px 0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn:hover {
+    border-color: var(--text-dim);
+    background-color: var(--surface);
+}
+
+.btn:active {
+    border-color: var(--accent);
+}
+
+.btn.primary {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.btn.primary:hover {
+    background-color: var(--accent);
+    color: var(--bg);
+}
+
+.btn.danger {
+    border-color: var(--wrong);
+    color: var(--wrong);
+}
+
+.btn.danger:hover {
+    background-color: var(--wrong);
+    color: var(--text);
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+    background-color: transparent;
+    border-color: var(--border);
+}
+
+/* Cost display on buttons */
+.btn .cost {
+    color: var(--text-dim);
+    margin-left: 8px;
+    font-size: 0.85rem;
+}
+
+/* Choice Groups */
+.choice-group {
+    margin: 12px 0;
+}
+
+.choice-group .choice-label {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+/* Parts Selection */
+.parts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.part-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.part-option:hover {
+    border-color: var(--text-dim);
+}
+
+.part-option.selected {
+    border-color: var(--accent);
+    background-color: rgba(224, 123, 57, 0.1);
+}
+
+.part-option input {
+    display: none;
+}
+
+.part-option .part-name {
+    flex: 1;
+    font-size: 0.85rem;
+}
+
+.part-option .part-cost {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+}
+
+/* ═══════════════════════════════════════════
+   RIGHT PANEL - Status
+   ═══════════════════════════════════════════ */
+
+#status-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: var(--surface);
+    border-right: none;
+    border-left: 1px solid var(--border);
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.status-item .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+}
+
+.status-item .value {
+    font-size: 1.1rem;
+    color: var(--text);
+}
+
+/* Reputation Bar */
+#reputation-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+#reputation-fill {
+    height: 100%;
+    background-color: var(--accent);
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+#reputation-value {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+/* Orders Section */
+#orders-section {
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+#orders-list {
+    list-style: none;
+    margin-top: 8px;
+}
+
+#orders-list li {
+    font-size: 0.85rem;
+    padding: 4px 0;
+    color: var(--text-dim);
+}
+
+#orders-list li .arrival {
+    color: var(--accent);
+    margin-left: 8px;
+}
+
+/* Upgrades Section */
+#upgrades-section {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+#upgrades-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.upgrade-item {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.upgrade-item:hover {
+    border-color: var(--text-dim);
+}
+
+.upgrade-item.owned {
+    border-color: var(--correct);
+    opacity: 0.6;
+    cursor: default;
+}
+
+.upgrade-item.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.upgrade-item .upgrade-name {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+.upgrade-item .upgrade-cost {
+    font-size: 0.75rem;
+    color: var(--accent);
+}
+
+.upgrade-item .upgrade-desc {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* ═══════════════════════════════════════════
+   Game Over / Win Screens
+   ═══════════════════════════════════════════ */
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(13, 13, 13, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#overlay-content {
+    max-width: 500px;
+    text-align: center;
+    padding: 40px;
+}
+
+#overlay-content p {
+    margin-bottom: 12px;
+}
+
+#overlay-content .title {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 24px;
+}
+
+#overlay-content.game-over .title {
+    color: var(--wrong);
+}
+
+#overlay-content.game-won .title {
+    color: var(--correct);
+}
+
+/* ═══════════════════════════════════════════
+   Responsive Design
+   ═══════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+    #game-container {
+        grid-template-columns: 220px 1fr 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 13px;
+    }
+    
+    #game-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+    }
+    
+    #garage-panel {
+        order: 1;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 16px;
+    }
+    
+    #garage-description {
+        display: none;
+    }
+    
+    #lift-status,
+    #waiting-cars {
+        display: inline-block;
+        width: 50%;
+        vertical-align: top;
+    }
+    
+    #time-display {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        text-align: right;
+    }
+    
+    #log-panel {
+        order: 2;
+        min-height: 60vh;
+    }
+    
+    #status-panel {
+        order: 3;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        padding: 16px;
+    }
+    
+    .status-item {
+        display: inline-flex;
+        flex-direction: column;
+        width: 30%;
+        vertical-align: top;
+    }
+    
+    #upgrades-section {
+        display: none;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   Utility Classes
+   ═══════════════════════════════════════════ */
+
+.dim {
+    color: var(--text-dim);
+}
+
+.accent {
+    color: var(--accent);
+}
+
+.good {
+    color: var(--correct);
+}
+
+.bad {
+    color: var(--wrong);
+}
+
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }

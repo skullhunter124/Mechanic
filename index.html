@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanic</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+</head>
+<body>
+    <div id="game-container">
+        <!-- LEFT COLUMN - THE GARAGE -->
+        <div id="garage-panel">
+            <div id="garage-description">
+                <p class="static-text">a small garage.</p>
+                <p class="static-text">one lift.</p>
+                <p class="static-text">the smell of oil and old coffee.</p>
+                <p class="static-text">a radio plays somewhere.</p>
+            </div>
+            <div id="lift-status">
+                <h3>on the lift</h3>
+                <p id="current-job" class="dim">empty</p>
+            </div>
+            <div id="waiting-cars">
+                <h3>waiting outside</h3>
+                <ul id="waiting-list">
+                    <li class="dim">no one waiting</li>
+                </ul>
+            </div>
+            <div id="time-display">
+                <p id="time-of-day">morning</p>
+                <p id="day-counter">day 1</p>
+                <p id="rent-warning" class="warning hidden">rent due in <span id="rent-countdown">7</span> days</p>
+            </div>
+        </div>
+
+        <!-- CENTER COLUMN - THE LOG -->
+        <div id="log-panel">
+            <div id="log">
+                <p class="system">the garage is cold.</p>
+                <p class="system">you've got €150 in your pocket.</p>
+                <p class="system">rent is €200 a week.</p>
+                <p class="system">&nbsp;</p>
+                <p class="system">someone will come.</p>
+                <p class="system">they always do.</p>
+            </div>
+            <div id="action-area">
+                <!-- Buttons appear here dynamically -->
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN - STATUS -->
+        <div id="status-panel">
+            <div class="status-item">
+                <span class="label">Money</span>
+                <span id="money-display" class="value">€150</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Reputation</span>
+                <div id="reputation-bar">
+                    <div id="reputation-fill"></div>
+                </div>
+                <span id="reputation-value" class="value">0</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Day</span>
+                <span id="day-display" class="value">1</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Rent due</span>
+                <span id="rent-display" class="value">7 days</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Jobs completed</span>
+                <span id="jobs-display" class="value">0</span>
+            </div>
+            <div id="orders-section" class="hidden">
+                <span class="label">On order</span>
+                <ul id="orders-list"></ul>
+            </div>
+            <div id="upgrades-section">
+                <h3>upgrades</h3>
+                <div id="upgrades-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for game over / win -->
+    <div id="overlay">
+        <div id="overlay-content"></div>
+    </div>
+
+    <!-- Game Data -->
+    <script src="data/parts.js"></script>
+    <script src="data/upgrades.js"></script>
+    <script src="data/customers.js"></script>
+    <script src="data/events.js"></script>
+    
+    <!-- Game Engine -->
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/engine.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
