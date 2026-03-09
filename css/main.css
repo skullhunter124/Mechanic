@@ -971,11 +971,12 @@ body {
 }
 
 .theme-btn[data-theme="default"] { color: #e07b39; }
-.theme-btn[data-theme="green"] { color: #5a9c69; }
-.theme-btn[data-theme="blue"] { color: #5a8cc9; }
-.theme-btn[data-theme="purple"] { color: #9c5a9c; }
-.theme-btn[data-theme="red"] { color: #c95a5a; }
-.theme-btn[data-theme="cyan"] { color: #5ac9c9; }
+.theme-btn[data-theme="green"] { color: #00ff41; }
+.theme-btn[data-theme="blue"] { color: #4a9eff; }
+.theme-btn[data-theme="purple"] { color: #a04aff; }
+.theme-btn[data-theme="red"] { color: #ff4a4a; }
+.theme-btn[data-theme="cyan"] { color: #00d4ff; }
+.theme-btn[data-theme="light"] { color: #f5f0e8; background: #2a2520; }
 
 .settings-toggle {
     display: flex;
@@ -1039,22 +1040,80 @@ body {
    Theme Variations
    ═══════════════════════════════════════════ */
 
+/* Green - Terminal Style */
 [data-theme="green"] {
-    --accent: #5a9c69;
+    --bg: #0a0f0a;
+    --surface: #0f1a0f;
+    --border: #1a2f1a;
+    --text: #a0ffa0;
+    --text-dim: #4a7a4a;
+    --accent: #00ff41;
+    --correct: #00ff41;
+    --wrong: #ff4141;
+    --warning: #ffff41;
 }
 
+/* Blue - Ocean */
 [data-theme="blue"] {
-    --accent: #5a8cc9;
+    --bg: #0a0d12;
+    --surface: #0f1520;
+    --border: #1a2535;
+    --text: #b0d0ff;
+    --text-dim: #5070a0;
+    --accent: #4a9eff;
+    --correct: #4aff9e;
+    --wrong: #ff4a4a;
+    --warning: #ffd04a;
 }
 
+/* Purple - Violet Night */
 [data-theme="purple"] {
-    --accent: #9c5a9c;
+    --bg: #0f0a12;
+    --surface: #160f1c;
+    --border: #2a1a35;
+    --text: #d0b0ff;
+    --text-dim: #7050a0;
+    --accent: #a04aff;
+    --correct: #4affa0;
+    --wrong: #ff4a8a;
+    --warning: #ffa04a;
 }
 
+/* Red - Crimson */
 [data-theme="red"] {
-    --accent: #c95a5a;
+    --bg: #120a0a;
+    --surface: #1c0f0f;
+    --border: #351a1a;
+    --text: #ffb0b0;
+    --text-dim: #a05050;
+    --accent: #ff4a4a;
+    --correct: #4aff4a;
+    --wrong: #ff2020;
+    --warning: #ffd04a;
 }
 
+/* Cyan - Arctic */
 [data-theme="cyan"] {
-    --accent: #5ac9c9;
+    --bg: #0a0f10;
+    --surface: #0f181a;
+    --border: #1a2830;
+    --text: #b0f0ff;
+    --text-dim: #5090a0;
+    --accent: #00d4ff;
+    --correct: #00ff90;
+    --wrong: #ff5050;
+    --warning: #ffe050;
+}
+
+/* Light Mode - Optional */
+[data-theme="light"] {
+    --bg: #f5f0e8;
+    --surface: #ebe5db;
+    --border: #d0c8bc;
+    --text: #2a2520;
+    --text-dim: #7a7060;
+    --accent: #c06020;
+    --correct: #208040;
+    --wrong: #c02020;
+    --warning: #a08020;
 }
