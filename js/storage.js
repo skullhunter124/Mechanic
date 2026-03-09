@@ -136,7 +136,7 @@ const Storage = {
             money: 300,
             reputation: 0,
             rent: 200,
-            rentDueIn: 7,
+            rentDueIn: 14,
             garage: {
                 lifts: 1,
                 hasToolbox: true,
