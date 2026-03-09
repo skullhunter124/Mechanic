@@ -73,7 +73,7 @@ const Game = {
         document.getElementById('log').innerHTML = '';
         await UI.printLines([
             'the garage is cold.',
-            'you\'ve got €150 in your pocket.',
+            'you\'ve got €300 in your pocket.',
             'rent is €200 a week.',
             '',
             'someone will come.',

@@ -133,7 +133,7 @@ const Storage = {
         return {
             day: 1,
             timeOfDay: 'morning',
-            money: 150,
+            money: 300,
             reputation: 0,
             rent: 200,
             rentDueIn: 7,
