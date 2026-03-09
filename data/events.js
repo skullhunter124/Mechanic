@@ -598,5 +598,533 @@ const EVENTS = [
                 ]
             }
         ]
+    },
+
+    // ═══════════════════════════════════════════
+    // Funny/Quirky Events
+    // ═══════════════════════════════════════════
+
+    {
+        id: 'pigeon_nest',
+        triggerAfterDay: 8,
+        triggerOnce: true,
+        text: [
+            'you hear chirping from the rafters.',
+            'a pigeon has built a nest on top of your parts shelf.',
+            'right above the brake pads.',
+            'the pigeon stares at you.',
+            'you stare back.',
+            'neither of you blinks.'
+        ],
+        choices: [
+            {
+                text: 'declare war on the pigeon',
+                effect: { reputation: 1 },
+                followup: [
+                    'you spend an hour chasing it with a broom.',
+                    'it leaves.',
+                    'it comes back.',
+                    'you name it gerald.',
+                    'gerald is now your problem.'
+                ]
+            },
+            {
+                text: 'let it stay',
+                effect: null,
+                followup: [
+                    'you leave some bread crumbs.',
+                    'the pigeon seems grateful.',
+                    'customers ask about "your pet."',
+                    'you correct them.',
+                    'they don\'t believe you.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'coffee_machine',
+        triggerAfterDay: 3,
+        triggerOnce: true,
+        text: [
+            'the coffee machine in the corner makes a sound.',
+            'a bad sound.',
+            'then a worse smell.',
+            'it\'s been making "coffee" for twenty years.',
+            'you think it\'s finally died.'
+        ],
+        choices: [
+            {
+                text: 'try to fix it yourself',
+                effect: null,
+                followup: [
+                    'you take it apart.',
+                    'you put it back together.',
+                    'there are three screws left over.',
+                    'it works.',
+                    'the coffee tastes like metal.',
+                    'you drink it anyway.'
+                ]
+            },
+            {
+                text: 'give it a proper burial',
+                effect: { money: -40 },
+                followup: [
+                    'you buy a new one.',
+                    'the coffee is better.',
+                    'but something is missing.',
+                    'the character.',
+                    'the danger.'
+                ]
+            },
+            {
+                text: 'just drink instant coffee now',
+                effect: null,
+                followup: [
+                    'you buy instant coffee.',
+                    'it\'s fine.',
+                    'it\'s not fine.',
+                    'but it\'s caffeine.',
+                    'that\'s enough.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'mysterious_noise',
+        triggerAfterDay: 12,
+        triggerOnce: false,
+        text: [
+            'a rhythmic clicking from somewhere in the garage.',
+            'you can\'t find it.',
+            'it stops when you get close.',
+            'starts again when you walk away.',
+            'the garage is haunted.',
+            'probably.'
+        ],
+        choices: [
+            {
+                text: 'investigate thoroughly',
+                effect: null,
+                followup: [
+                    'you spend an hour searching.',
+                    'behind shelves. under the lift.',
+                    'nothing.',
+                    'the clicking stops.',
+                    'you\'ll never know.',
+                    'that\'s worse.'
+                ]
+            },
+            {
+                text: 'ignore it',
+                effect: null,
+                followup: [
+                    'you ignore it.',
+                    'it ignores you.',
+                    'an understanding is reached.',
+                    'the garage makes sounds.',
+                    'garages do that.'
+                ]
+            },
+            {
+                text: 'blame the previous owner',
+                effect: { reputation: 1 },
+                followup: [
+                    '"probably something the last guy left."',
+                    'you tell yourself this.',
+                    'it helps.',
+                    'a little.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'customer_advice',
+        triggerReputation: 20,
+        triggerOnce: true,
+        text: [
+            'a customer watches you work.',
+            '"my cousin says you should check the flibber-gibbet."',
+            '"the what?"',
+            '"the flibber-gibbet. it\'s connected to the thingamajig."',
+            'you stare at them.',
+            'they stare back.',
+            '"i\'ll look into it."'
+        ],
+        choices: [
+            {
+                text: 'take notes on their advice',
+                effect: { reputation: 2 },
+                followup: [
+                    'you write "flibber-gibbet" in your notebook.',
+                    'you underline it.',
+                    'the customer is satisfied.',
+                    'you have no idea what just happened.'
+                ]
+            },
+            {
+                text: 'explain you\'re the professional',
+                effect: { reputation: -2 },
+                followup: [
+                    '"i\'ve been doing this for years."',
+                    '"i know what i\'m doing."',
+                    'they look unconvinced.',
+                    'their cousin probably has a youtube channel.',
+                    'you hate that cousin.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'radio_contest',
+        triggerAfterDay: 15,
+        triggerOnce: true,
+        text: [
+            'the radio announces a contest.',
+            '"caller ten wins tickets to the monster truck rally!"',
+            'you look at your phone.',
+            'you look at the car on the lift.',
+            'you look at your phone again.'
+        ],
+        choices: [
+            {
+                text: 'call in',
+                effect: null,
+                followup: [
+                    'you dial.',
+                    'busy.',
+                    'you dial again.',
+                    'busy.',
+                    'caller eleven wins.',
+                    'you go back to work.',
+                    'the car still needs fixing.'
+                ]
+            },
+            {
+                text: 'ignore it',
+                effect: null,
+                followup: [
+                    'you keep working.',
+                    'someone else wins.',
+                    'they sound happy.',
+                    'you hear tires screeching on the radio.',
+                    'that\'s entertainment.',
+                    'this is work.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'lunch_thief',
+        triggerAfterDay: 20,
+        triggerOnce: true,
+        text: [
+            'you go to get your lunch from the mini-fridge.',
+            'it\'s gone.',
+            'someone ate your sandwich.',
+            'your name was on it.',
+            'in permanent marker.',
+            'there are no other employees.'
+        ],
+        choices: [
+            {
+                text: 'set a trap',
+                effect: null,
+                followup: [
+                    'you make another sandwich.',
+                    'you put a note on it.',
+                    '"this one is poisoned."',
+                    'it disappears too.',
+                    'you respect the commitment.'
+                ]
+            },
+            {
+                text: 'accept your fate',
+                effect: null,
+                followup: [
+                    'you buy lunch.',
+                    'it\'s expensive.',
+                    'you eat it slowly.',
+                    'savoring every bite.',
+                    'the sandwich thief is out there.',
+                    'waiting.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'customer_smalltalk',
+        triggerAfterDay: 5,
+        triggerOnce: false,
+        text: [
+            'a customer waits while you work.',
+            '"nice weather we\'re having."',
+            'it\'s raining.',
+            '"got any vacation plans?"',
+            'you can\'t afford a vacation.',
+            '"how about those sports?"',
+            'you don\'t watch sports.',
+            'this is going to be a long repair.'
+        ],
+        choices: [
+            {
+                text: 'make small talk back',
+                effect: { reputation: 1 },
+                followup: [
+                    '"yes. weather. sports."',
+                    'they seem satisfied.',
+                    'you die a little inside.',
+                    'but customer service is customer service.'
+                ]
+            },
+            {
+                text: 'focus on the work',
+                effect: null,
+                followup: [
+                    'you ignore them.',
+                    'politely.',
+                    'the wrench doesn\'t judge.',
+                    'the wrench doesn\'t ask about sports.',
+                    'you like the wrench.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'found_money',
+        triggerAfterDay: 7,
+        triggerOnce: false,
+        text: [
+            'you find €20 under the lift.',
+            'crumpled. dirty.',
+            'probably been there for years.',
+            'finders keepers.',
+            'that\'s the law.',
+            'probably.'
+        ],
+        choices: [
+            {
+                text: 'keep it',
+                effect: { money: 20 },
+                followup: [
+                    'you pocket the money.',
+                    'it\'s not stealing.',
+                    'it\'s archaeology.',
+                    'profitable archaeology.'
+                ]
+            },
+            {
+                text: 'ask around',
+                effect: { reputation: 2 },
+                followup: [
+                    'you ask your customers.',
+                    'nobody claims it.',
+                    'you keep it.',
+                    'but at least you asked.',
+                    'that counts for something.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'power_outage',
+        triggerAfterDay: 25,
+        triggerOnce: true,
+        text: [
+            'the power goes out.',
+            'everything stops.',
+            'the lift is stuck.',
+            'there\'s a car on the lift.',
+            'the customer is still in the waiting room.',
+            '"this is normal," you say.',
+            'it is not normal.'
+        ],
+        choices: [
+            {
+                text: 'wait it out',
+                effect: null,
+                followup: [
+                    'you wait.',
+                    'an hour.',
+                    'two hours.',
+                    'the power comes back.',
+                    'the customer is asleep.',
+                    'you finish the job in silence.'
+                ]
+            },
+            {
+                text: 'work by flashlight',
+                effect: { reputation: 3 },
+                followup: [
+                    'you find a flashlight.',
+                    'you keep working.',
+                    'the customer watches.',
+                    '"this is the most interesting thing that\'s happened all week."',
+                    'you\'re not sure if that\'s a compliment.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'review',
+        triggerReputation: 35,
+        triggerOnce: true,
+        text: [
+            'a customer shows you their phone.',
+            '"i left you a review."',
+            'you look.',
+            'four stars.',
+            '"great work. terrible coffee."',
+            'you don\'t even serve coffee.'
+        ],
+        choices: [
+            {
+                text: 'start serving coffee',
+                effect: { money: -30 },
+                followup: [
+                    'you buy a coffee machine.',
+                    'you serve coffee.',
+                    'it\'s terrible.',
+                    'the reviews improve.',
+                    'the coffee does not.'
+                ]
+            },
+            {
+                text: 'ignore the review',
+                effect: null,
+                followup: [
+                    'you can\'t please everyone.',
+                    'especially with coffee you don\'t serve.',
+                    'you move on.',
+                    'four stars is still good.',
+                    'probably.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'old_photos',
+        triggerAfterDay: 40,
+        triggerOnce: true,
+        text: [
+            'you find old photos behind a shelf.',
+            'this garage in the 1980s.',
+            'the previous owner.',
+            'younger. smiling. holding a wrench.',
+            'same lift.',
+            'same oil stains.',
+            'some things don\'t change.'
+        ],
+        choices: [
+            {
+                text: 'put them on the wall',
+                effect: { reputation: 2 },
+                followup: [
+                    'you frame the photos.',
+                    'hang them by the door.',
+                    'customers ask about them.',
+                    'you tell stories.',
+                    'some of them are even true.'
+                ]
+            },
+            {
+                text: 'keep them in a drawer',
+                effect: null,
+                followup: [
+                    'you put them away.',
+                    'some memories are private.',
+                    'the garage has secrets.',
+                    'you\'re one of them now.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'customer_compliment',
+        triggerReputation: 45,
+        triggerOnce: true,
+        text: [
+            'a customer finishes paying.',
+            'they pause at the door.',
+            '"you know what? you\'re a good mechanic."',
+            '"and i\'ve met a lot of bad ones."',
+            'they leave.',
+            'you stand there for a moment.',
+            'that was nice.'
+        ],
+        choices: [
+            {
+                text: 'say thank you',
+                effect: { reputation: 3 },
+                followup: [
+                    '"thanks."',
+                    'they\'re already gone.',
+                    'but you said it.',
+                    'that matters.',
+                    'to you, anyway.'
+                ]
+            },
+            {
+                text: 'play it cool',
+                effect: null,
+                followup: [
+                    'you nod.',
+                    'like you hear that all the time.',
+                    'you don\'t.',
+                    'but they don\'t need to know that.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'wrong_garage',
+        triggerAfterDay: 6,
+        triggerOnce: false,
+        text: [
+            'a car pulls in.',
+            'the driver gets out.',
+            'looks around.',
+            'looks at their phone.',
+            'looks at you.',
+            '"this isn\'t the dealership."',
+            'no. it isn\'t.'
+        ],
+        choices: [
+            {
+                text: 'offer to help anyway',
+                effect: { reputation: 2, money: 40 },
+                followup: [
+                    '"i can still take a look."',
+                    'they hesitate.',
+                    'then agree.',
+                    'you fix their problem.',
+                    'they leave a review.',
+                    'the dealership loses a customer.',
+                    'you feel a little powerful.'
+                ]
+            },
+            {
+                text: 'give them directions',
+                effect: null,
+                followup: [
+                    'you point down the road.',
+                    '"three blocks. big sign."',
+                    'they thank you.',
+                    'drive away.',
+                    'you hope the dealership charges double.'
+                ]
+            }
+        ]
     }
 ];

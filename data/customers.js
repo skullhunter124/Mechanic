@@ -5813,5 +5813,722 @@ const CUSTOMERS = [
                 ]
             }
         }
+    },
+
+    // ═══════════════════════════════════════════
+    // FUNNY/QUIRKY CUSTOMERS
+    // ═══════════════════════════════════════════
+
+    // 51. DIY disaster - customer who tried to fix it themselves
+    {
+        id: 'golf_diy_01',
+        minReputation: 15,
+        maxReputation: 50,
+        requiresUpgrade: null,
+        car: {
+            make: 'Volkswagen',
+            model: 'Golf',
+            year: 2008,
+            condition: 'rough'
+        },
+        customer: {
+            name: 'Lukas',
+            personality: 'embarrassed',
+            budget: 'medium',
+            patience: 2,
+            arrival: [
+                'a golf is towed in.',
+                'the hood is open. parts are everywhere.',
+                'the driver won\'t make eye contact.',
+                '"i watched a youtube video," he says.',
+                '"it seemed simple."',
+                '"how was i supposed to know there were springs?"',
+                'you look at the suspension.',
+                'it\'s worse than you imagined.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'assess the damage',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'he tried to replace the struts.',
+                    'in his driveway.',
+                    'with a hammer.',
+                    'the hammer is still in the wheel well.',
+                    'how is the hammer in the wheel well?'
+                ]
+            },
+            {
+                action: 'check what parts are missing',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'several bolts are missing.',
+                    'a spring is in the back seat.',
+                    'the strut mount is... somewhere.',
+                    'this will be expensive.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['strut_mount', 'suspension_springs'],
+            acceptableRepairs: ['strut_mount'],
+            wrongRepairs: ['shock_absorbers']
+        },
+        outcomes: {
+            correct: {
+                payment: 280,
+                reputationChange: 10,
+                dialogue: [
+                    'you fix what lukas broke.',
+                    'and what he was trying to fix originally.',
+                    '"please don\'t do this again," you say.',
+                    '"i won\'t," he says.',
+                    '"the youtube video made it look easy."',
+                    '"youtube videos always look easy."',
+                    'he nods.',
+                    'he understands now.'
+                ]
+            },
+            partial: {
+                payment: 180,
+                reputationChange: 5,
+                dialogue: [
+                    'you get it running.',
+                    'it\'s not perfect.',
+                    'but it\'s safe.',
+                    'lukas is just relieved.',
+                    '"i\'ll stick to oil changes," he says.',
+                    'you don\'t tell him about his last oil change.',
+                    'some things are better left unsaid.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -15,
+                dialogue: [
+                    'you try to fix it.',
+                    'it\'s too far gone.',
+                    'the car needs to go to a specialist.',
+                    'lukas looks at you.',
+                    '"first youtube. now you."',
+                    'he\'s not wrong.',
+                    'it hurts.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -3,
+                dialogue: [
+                    'lukas couldn\'t wait.',
+                    'he called a real mechanic.',
+                    'you try not to take it personally.'
+                ]
+            }
+        }
+    },
+
+    // 52. The over-explainer
+    {
+        id: 'ford_explainer_01',
+        minReputation: 5,
+        maxReputation: 40,
+        requiresUpgrade: null,
+        car: {
+            make: 'Ford',
+            model: 'Focus',
+            year: 2012,
+            condition: 'average'
+        },
+        customer: {
+            name: 'Petra',
+            personality: 'talkative',
+            budget: 'medium',
+            patience: 3,
+            arrival: [
+                'a focus pulls in.',
+                'the driver gets out.',
+                'she\'s already talking.',
+                '"so i was driving to my sister\'s - you know my sister? she lives in munich now - and i heard this sound, not a bad sound, more like a whirring, like when you put a card in bicycle spokes, you know that sound? my cousin used to do that, he\'s a dentist now, can you believe it? anyway the sound..."',
+                'this is going to take a while.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'listen to her describe the sound',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'she describes the sound.',
+                    'in great detail.',
+                    'with sound effects.',
+                    'and hand gestures.',
+                    'you think it might be a wheel bearing.',
+                    'you\'re not sure.',
+                    'she\'s still talking.'
+                ]
+            },
+            {
+                action: 'actually check the car',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you escape to check the car.',
+                    'front right wheel bearing.',
+                    'grinding noise when turning left.',
+                    'classic failure.',
+                    'she\'s still talking.',
+                    'from across the garage.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['wheel_bearing'],
+            acceptableRepairs: ['wheel_bearing'],
+            wrongRepairs: ['tyre_budget', 'brake_pads_front']
+        },
+        outcomes: {
+            correct: {
+                payment: 150,
+                reputationChange: 7,
+                dialogue: [
+                    'you fix the bearing.',
+                    'petra talks the entire time.',
+                    'about her sister.',
+                    'about munich.',
+                    'about her dentist cousin.',
+                    '"you\'re a good listener," she says.',
+                    'you weren\'t listening.',
+                    'but you fixed the car.',
+                    'that counts.'
+                ]
+            },
+            partial: {
+                payment: 150,
+                reputationChange: 7,
+                dialogue: [
+                    'same result.',
+                    'there was only one thing wrong.',
+                    'she tells her sister about you.',
+                    'at length.',
+                    'you feel bad for the sister.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -10,
+                dialogue: [
+                    'you replace the wrong part.',
+                    'the noise continues.',
+                    'petra describes the noise again.',
+                    'in even more detail.',
+                    'this is your punishment now.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -5,
+                dialogue: [
+                    'petra left.',
+                    'probably still talking.',
+                    'somewhere else now.'
+                ]
+            }
+        }
+    },
+
+    // 53. The suspicious customer
+    {
+        id: 'audi_suspicious_01',
+        minReputation: 20,
+        maxReputation: 60,
+        requiresUpgrade: null,
+        car: {
+            make: 'Audi',
+            model: 'A4',
+            year: 2015,
+            condition: 'good'
+        },
+        customer: {
+            name: 'Marcus',
+            personality: 'suspicious',
+            budget: 'high',
+            patience: 2,
+            arrival: [
+                'an audi pulls in.',
+                'the driver gets out slowly.',
+                'he\'s watching you.',
+                '"i\'ve been to three mechanics," he says.',
+                '"they all tried to rip me off."',
+                '"how do i know you won\'t?"',
+                'he squints at you.',
+                'you show him your hands.',
+                'empty.',
+                'for now.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'ask what the problem is',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    '"the engine light is on."',
+                    '"but i checked online."',
+                    '"it could be anything."',
+                    '"probably nothing."',
+                    '"mechanics always say it\'s something."',
+                    'the check engine light is flashing.',
+                    'that\'s not nothing.'
+                ]
+            },
+            {
+                action: 'run diagnostic scan',
+                cost: 15,
+                time: 0,
+                requiresUpgrade: 'hasDiagnosticScanner',
+                reveals: [
+                    'multiple misfire codes.',
+                    'cylinder 2 and 3.',
+                    'spark plugs are original.',
+                    '80,000 kilometers on them.',
+                    'this is definitely something.'
+                ]
+            },
+            {
+                action: 'check the spark plugs',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you pull a plug.',
+                    'the gap is worn to nothing.',
+                    'electrode is nearly gone.',
+                    '"this is the original plug," you say.',
+                    '"what did the other mechanics say?"',
+                    '"they said i needed plugs."',
+                    '"and?"',
+                    '"i thought they were lying."',
+                    'they weren\'t lying.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['spark_plugs'],
+            acceptableRepairs: ['spark_plugs'],
+            wrongRepairs: ['ignition_coil', 'fuel_filter']
+        },
+        outcomes: {
+            correct: {
+                payment: 140,
+                reputationChange: 12,
+                dialogue: [
+                    'new plugs.',
+                    'engine runs smooth.',
+                    'marcus stares at the engine.',
+                    'silently.',
+                    'for a long time.',
+                    '"they were telling the truth," he says.',
+                    '"the other mechanics."',
+                    '"they were telling the truth."',
+                    'he seems shaken.',
+                    'his worldview is crumbling.',
+                    'he pays without negotiating.',
+                    'small victories.'
+                ]
+            },
+            partial: {
+                payment: 140,
+                reputationChange: 12,
+                dialogue: [
+                    'same outcome.',
+                    'marcus may learn to trust.',
+                    'someday.',
+                    'not today.',
+                    'but someday.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -15,
+                dialogue: [
+                    'you replace the wrong part.',
+                    'marcus looks vindicated.',
+                    '"i knew it," he says.',
+                    '"you\'re all the same."',
+                    'you refund him.',
+                    'he leaves.',
+                    'he\'ll never trust anyone now.',
+                    'you made it worse.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -5,
+                dialogue: [
+                    'marcus didn\'t trust you either.',
+                    'he\'s still looking.',
+                    'for a mechanic who doesn\'t exist.'
+                ]
+            }
+        }
+    },
+
+    // 54. The car name
+    {
+        id: 'toyota_name_01',
+        minReputation: 0,
+        maxReputation: 35,
+        requiresUpgrade: null,
+        car: {
+            make: 'Toyota',
+            model: 'Corolla',
+            year: 2007,
+            condition: 'average'
+        },
+        customer: {
+            name: 'Anna',
+            personality: 'attached',
+            budget: 'medium',
+            patience: 3,
+            arrival: [
+                'a corolla rolls in.',
+                'the driver pats the hood as she gets out.',
+                '"gerald isn\'t feeling well," she says.',
+                '"gerald?"',
+                '"my car."',
+                '"your car is named gerald?"',
+                '"yes. be gentle with him."',
+                'you look at the car.',
+                'the car looks back.',
+                'metaphorically.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'check on gerald',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you pop the hood.',
+                    'anna winces.',
+                    '"is he okay?"',
+                    'you check the basics.',
+                    'belt is squealing.',
+                    'serpentine belt. cracked. loose.',
+                    '"gerald needs a new belt," you say.',
+                    'anna looks concerned.',
+                    '"will he be okay?"',
+                    '"he\'ll be fine."',
+                    'you\'re talking about a car.',
+                    'this is your life now.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['serpentine_belt'],
+            acceptableRepairs: ['serpentine_belt'],
+            wrongRepairs: ['timing_belt', 'engine_oil']
+        },
+        outcomes: {
+            correct: {
+                payment: 95,
+                reputationChange: 8,
+                dialogue: [
+                    'new belt on gerald.',
+                    'anna is relieved.',
+                    '"thank you for taking care of him."',
+                    'she pats the roof.',
+                    '"let\'s go home, gerald."',
+                    'the car doesn\'t respond.',
+                    'because it\'s a car.',
+                    'but anna seems happy.',
+                    'that\'s enough.'
+                ]
+            },
+            partial: {
+                payment: 95,
+                reputationChange: 8,
+                dialogue: [
+                    'gerald is fixed.',
+                    'anna and gerald drive off.',
+                    'you hear her talking to the car.',
+                    'through the window.',
+                    'some bonds are unbreakable.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -10,
+                dialogue: [
+                    'you fix the wrong thing.',
+                    'anna is upset.',
+                    '"gerald is still suffering."',
+                    'she takes gerald somewhere else.',
+                    'gerald deserved better.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -5,
+                dialogue: [
+                    'anna couldn\'t wait.',
+                    'gerald is still sick.',
+                    'somewhere else now.'
+                ]
+            }
+        }
+    },
+
+    // 55. The philosopher
+    {
+        id: 'mercedes_philosopher_01',
+        minReputation: 30,
+        maxReputation: 70,
+        requiresUpgrade: null,
+        car: {
+            make: 'Mercedes-Benz',
+            model: 'C-Class',
+            year: 2005,
+            condition: 'good'
+        },
+        customer: {
+            name: 'Stefan',
+            personality: 'philosophical',
+            budget: 'high',
+            patience: 4,
+            arrival: [
+                'an old mercedes glides in.',
+                'the driver gets out slowly.',
+                'he looks at the car.',
+                'he looks at the sky.',
+                'he looks at you.',
+                '"have you ever thought," he says.',
+                '"about how a car is like life?"',
+                '"it runs until it doesn\'t."',
+                '"and we\'re all just mechanics."',
+                '"trying to keep things running."',
+                'you just want to fix his car.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'bring him back to reality',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    '"what\'s wrong with the car?"',
+                    'he considers this.',
+                    '"what is wrong, truly?"',
+                    '"with any of us?"',
+                    '"the transmission is slipping."',
+                    'finally. something useful.'
+                ]
+            },
+            {
+                action: 'check the transmission',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'you check the fluid.',
+                    'low. dark. burnt smell.',
+                    'transmission is worn.',
+                    'but fluid change might help.',
+                    'might not.',
+                    'like life.',
+                    'uncertain.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['transmission_fluid'],
+            acceptableRepairs: ['transmission_fluid'],
+            wrongRepairs: ['engine_oil', 'clutch_kit']
+        },
+        outcomes: {
+            correct: {
+                payment: 120,
+                reputationChange: 10,
+                dialogue: [
+                    'new fluid.',
+                    'shifts better.',
+                    'stefan nods.',
+                    '"you understand."',
+                    '"sometimes all we need..."',
+                    '"is fresh fluid."',
+                    '"a change."',
+                    '"to keep going."',
+                    'he drives away.',
+                    'you think about what he said.',
+                    'then you stop.',
+                    'that way lies madness.'
+                ]
+            },
+            partial: {
+                payment: 120,
+                reputationChange: 10,
+                dialogue: [
+                    'the car is fixed.',
+                    'stefan is satisfied.',
+                    '"we\'re all just trying to shift," he says.',
+                    '"into the right gear."',
+                    'you don\'t know what that means.',
+                    'but he seems happy.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -12,
+                dialogue: [
+                    'you fix the wrong thing.',
+                    'stefan is disappointed.',
+                    '"even mechanics," he says.',
+                    '"sometimes fail to see."',
+                    '"what is right in front of them."',
+                    'he\'s not wrong.',
+                    'that makes it worse.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -5,
+                dialogue: [
+                    'stefan drove away.',
+                    'still slipping.',
+                    'still thinking.',
+                    'probably.'
+                ]
+            }
+        }
+    },
+
+    // 56. The hurry
+    {
+        id: 'bmw_hurry_01',
+        minReputation: 10,
+        maxReputation: 45,
+        requiresUpgrade: null,
+        car: {
+            make: 'BMW',
+            model: '320i',
+            year: 2011,
+            condition: 'good'
+        },
+        customer: {
+            name: 'Felix',
+            personality: 'impatient',
+            budget: 'high',
+            patience: 1,
+            arrival: [
+                'a bmw almost hits the garage door.',
+                'the driver jumps out.',
+                'he\'s checking his watch.',
+                '"i have a meeting in two hours."',
+                '"the steering is making noise."',
+                '"can you fix it? quickly?"',
+                '"important people are waiting."',
+                'you\'ve never heard of him.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'check the steering',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'power steering fluid is low.',
+                    'pump is whining.',
+                    'there\'s a leak.',
+                    'somewhere.',
+                    'finding it takes time.',
+                    'time felix doesn\'t have.'
+                ]
+            },
+            {
+                action: 'quick visual inspection',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you see the leak.',
+                    'power steering hose.',
+                    'wet with fluid.',
+                    'could top it off.',
+                    'temporary fix.',
+                    'or do it right.',
+                    'felix is tapping his foot.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['power_steering_fluid'],
+            acceptableRepairs: ['power_steering_fluid'],
+            wrongRepairs: ['shock_absorbers', 'wheel_bearing']
+        },
+        outcomes: {
+            correct: {
+                payment: 85,
+                reputationChange: 6,
+                dialogue: [
+                    'you top off the fluid.',
+                    'the noise stops.',
+                    'felix checks his watch.',
+                    '"that\'s it?"',
+                    '"for now. you have a leak."',
+                    '"i don\'t have time for leaks."',
+                    'he throws money at you.',
+                    'drives off.',
+                    'you hope he makes it.',
+                    'to his important meeting.',
+                    'with important people.',
+                    'who\'ve never heard of him.'
+                ]
+            },
+            partial: {
+                payment: 85,
+                reputationChange: 6,
+                dialogue: [
+                    'the car is quieter.',
+                    'felix leaves.',
+                    'the leak is still there.',
+                    'it will be back.',
+                    'they always come back.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -15,
+                dialogue: [
+                    'you waste time on the wrong thing.',
+                    'felix misses his meeting.',
+                    'he\'s furious.',
+                    '"do you know who i was meeting?"',
+                    'you don\'t.',
+                    'he doesn\'t say.',
+                    'some mysteries remain.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -3,
+                dialogue: [
+                    'felix didn\'t have time for you.',
+                    'he went somewhere faster.',
+                    'probably still leaking.',
+                    'probably still late.'
+                ]
+            }
+        }
     }
 ];
