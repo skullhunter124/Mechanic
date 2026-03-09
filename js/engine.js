@@ -84,7 +84,7 @@ const Engine = {
             };
             
             state.money -= state.rent;
-            state.rentDueIn = 7;
+            state.rentDueIn = 14;
             
             // Reset weekly stats
             state.weeklyJobsCompleted = 0;
