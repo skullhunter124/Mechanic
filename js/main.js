@@ -165,6 +165,21 @@ const Game = {
             return;
         }
         
+        // New customers can arrive even when we have a car on the lift
+        // They'll wait in the waiting area
+        const waitingCars = this.state.waitingCars || [];
+        const maxWaitingCars = this.state.garage.hasWaitingRoom ? 5 : 3;
+        
+        if (waitingCars.length < maxWaitingCars && Math.random() < 0.5) {
+            const scenario = Engine.selectNextCustomer(this.state);
+            if (scenario) {
+                this.state = Engine.addWaitingCustomer(this.state, scenario);
+                await UI.printLine('a car pulls into the lot.', 'arrival');
+                await UI.updateWaitingCars(this.state.waitingCars);
+                await UI.delay(500);
+            }
+        }
+        
         // Check if lift is free
         if (this.state.currentJob) {
             // Already have a job, continue with it
@@ -175,24 +190,11 @@ const Game = {
         
         // Lift is free - check for set-aside jobs or waiting cars
         const setAsideJobs = this.state.setAsideJobs || [];
-        const waitingCars = this.state.waitingCars || [];
+        const updatedWaitingCars = this.state.waitingCars || [];
         
-        if (setAsideJobs.length > 0 || waitingCars.length > 0) {
+        if (setAsideJobs.length > 0 || updatedWaitingCars.length > 0) {
             await this.promptStartJob();
             return;
-        }
-        
-        // No waiting cars or set-aside jobs, maybe a new customer arrives
-        if (Math.random() < 0.6) {
-            const scenario = Engine.selectNextCustomer(this.state);
-            if (scenario) {
-                this.state = Engine.addWaitingCustomer(this.state, scenario);
-                await UI.printLine('a car pulls into the lot.', 'arrival');
-                await UI.updateWaitingCars(this.state.waitingCars);
-                await UI.delay(1000);
-                await this.promptStartJob();
-                return;
-            }
         }
         
         // No customers, advance time
@@ -390,14 +392,106 @@ const Game = {
             return true;
         });
         
-        // Add repair button
-        const buttons = availableDiagnostics.map(d => ({
-            text: d.action,
-            onClick: () => this.runDiagnostic(d),
-            options: {
-                cost: d.cost > 0 ? d.cost : undefined
+        // Build diagnostic buttons with upgrade-aware costs
+        const buttons = availableDiagnostics.map(d => {
+            // Calculate actual cost based on owned upgrades
+            let actualCost = d.cost;
+            let displayText = d.action;
+            
+            // Diagnostic scanner makes scanner diagnostics free
+            const isScannerDiagnostic = d.requiresUpgrade === 'hasDiagnosticScanner' ||
+                                        d.action.toLowerCase().includes('scanner') ||
+                                        d.action.toLowerCase().includes('diagnostic scan');
+            
+            if (isScannerDiagnostic && this.state.garage.hasDiagnosticScanner && d.cost > 0) {
+                actualCost = 0;
+                displayText = d.action + ' (free - owned)';
             }
-        }));
+            
+            // Tire machine makes tire diagnostics faster/better
+            if (d.requiresUpgrade === 'hasTireMachine' && this.state.garage.hasTireMachine) {
+                displayText = d.action + ' (using tire machine)';
+            }
+            
+            // A/C machine
+            if (d.requiresUpgrade === 'hasACMachine' && this.state.garage.hasACMachine) {
+                displayText = d.action + ' (using A/C machine)';
+            }
+            
+            // Alignment rig
+            if (d.requiresUpgrade === 'hasAlignmentRig' && this.state.garage.hasAlignmentRig) {
+                displayText = d.action + ' (using alignment rig)';
+            }
+            
+            return {
+                text: displayText,
+                onClick: () => this.runDiagnostic(d),
+                options: {
+                    cost: actualCost > 0 ? actualCost : undefined
+                }
+            };
+        });
+        
+        // Add upgrade-specific quick actions
+        if (this.state.garage.hasDiagnosticScanner) {
+            // Add quick scanner option
+            const hasQuickScan = buttons.some(b => b.text.toLowerCase().includes('scanner'));
+            if (!hasQuickScan) {
+                buttons.unshift({
+                    text: 'put on diagnostic scanner',
+                    onClick: () => this.runQuickDiagnosticScan(),
+                    options: {}
+                });
+            }
+        }
+        
+        if (this.state.garage.hasTireMachine) {
+            buttons.push({
+                text: 'check tires on machine',
+                onClick: () => this.runTireCheck(),
+                options: {}
+            });
+        }
+        
+        if (this.state.garage.hasACMachine) {
+            buttons.push({
+                text: 'test A/C system',
+                onClick: () => this.runACCheck(),
+                options: {}
+            });
+        }
+        
+        if (this.state.garage.hasAlignmentRig) {
+            buttons.push({
+                text: 'check wheel alignment',
+                onClick: () => this.runAlignmentCheck(),
+                options: {}
+            });
+        }
+        
+        if (this.state.garage.hasWelder) {
+            buttons.push({
+                text: 'inspect for welding repairs',
+                onClick: () => this.runWelderCheck(),
+                options: {}
+            });
+        }
+        
+        if (this.state.garage.hasSprayGun) {
+            buttons.push({
+                text: 'check paint/body condition',
+                onClick: () => this.runPaintCheck(),
+                options: {}
+            });
+        }
+        
+        if (this.state.garage.hasEngineHoist) {
+            buttons.push({
+                text: 'inspect engine bay',
+                onClick: () => this.runEngineHoistCheck(),
+                options: {}
+            });
+        }
         
         buttons.push({
             text: 'make a repair',
@@ -419,6 +513,323 @@ const Game = {
         });
         
         UI.showButtons(buttons);
+    },
+    
+    /**
+     * Run quick diagnostic scan (available when scanner is owned)
+     */
+    async runQuickDiagnosticScan() {
+        UI.clearActions();
+        
+        await UI.printLine('connecting to the diagnostic port...', 'action');
+        await UI.delay(500);
+        await UI.printLine('reading fault codes...', 'action');
+        await UI.delay(500);
+        
+        const job = this.state.currentJob;
+        
+        // Generate scanner results based on the job
+        const scannerResults = this.generateScannerResults(job);
+        await UI.printLines(scannerResults, 'diagnostic');
+        
+        // Track diagnostic
+        if (!job.diagnosticsRun) {
+            job.diagnosticsRun = [];
+        }
+        job.diagnosticsRun.push('diagnostic scanner');
+        
+        Storage.save(this.state);
+        await this.showDiagnosticsOptions();
+    },
+    
+    /**
+     * Generate scanner results based on current job
+     */
+    generateScannerResults(job) {
+        const results = ['═══ DIAGNOSTIC REPORT ═══'];
+        
+        // Check solution parts for hints
+        const correctRepairs = job.solution.correctRepairs || [];
+        const acceptableRepairs = job.solution.acceptableRepairs || [];
+        const allRepairs = [...correctRepairs, ...acceptableRepairs];
+        
+        // Generate codes based on repair types
+        if (allRepairs.some(r => r.includes('brake'))) {
+            results.push('CODE C0035: ABS hydraulic valve circuit');
+            results.push('CODE C0040: Brake pedal position sensor');
+        }
+        if (allRepairs.some(r => r.includes('oxygen') || r.includes('o2'))) {
+            results.push('CODE P0135: O2 Sensor Heater Circuit');
+            results.push('CODE P0171: System Too Lean (Bank 1)');
+        }
+        if (allRepairs.some(r => r.includes('spark') || r.includes('coil'))) {
+            results.push('CODE P0300: Random/Multiple Cylinder Misfire');
+            results.push('CODE P0351: Ignition Coil Circuit');
+        }
+        if (allRepairs.some(r => r.includes('mass') || r.includes('maf'))) {
+            results.push('CODE P0101: Mass Air Flow Sensor Range/Performance');
+        }
+        if (allRepairs.some(r => r.includes('throttle'))) {
+            results.push('CODE P0121: Throttle Position Sensor Range');
+        }
+        if (allRepairs.some(r => r.includes('alternator') || r.includes('battery'))) {
+            results.push('CODE P0620: Generator Control Circuit');
+            results.push('Voltage: 11.8V (low)');
+        }
+        if (allRepairs.some(r => r.includes('transmission') || r.includes('trans'))) {
+            results.push('CODE P0700: Transmission Control System Malfunction');
+        }
+        if (allRepairs.some(r => r.includes('coolant') || r.includes('thermostat'))) {
+            results.push('CODE P0128: Coolant Thermostat Below Regulating Temperature');
+        }
+        if (allRepairs.some(r => r.includes('ac') || r.includes('a/c'))) {
+            results.push('CODE P0530: A/C Refrigerant Pressure Sensor Circuit');
+        }
+        
+        // If no specific codes, show generic
+        if (results.length === 1) {
+            results.push('No active fault codes.');
+            results.push('All systems nominal.');
+            results.push('Issue may be mechanical.');
+        }
+        
+        results.push('═════════════════════════');
+        
+        return results;
+    },
+    
+    /**
+     * Run tire check (available when tire machine is owned)
+     */
+    async runTireCheck() {
+        UI.clearActions();
+        
+        await UI.printLine('mounting tires on machine...', 'action');
+        await UI.delay(500);
+        
+        const job = this.state.currentJob;
+        const results = [
+            '═══ TIRE REPORT ═══',
+            'Tread depth: varying',
+            'Pressure check: complete',
+            'Balance test: running...'
+        ];
+        
+        // Check if tires are part of the solution
+        const allRepairs = [...(job.solution.correctRepairs || []), ...(job.solution.acceptableRepairs || [])];
+        if (allRepairs.some(r => r.includes('tire') || r.includes('wheel'))) {
+            results.push('ISSUE DETECTED: Tire/wheel problem found');
+            results.push('Recommendation: Inspect tires and wheels');
+        } else {
+            results.push('Tires appear serviceable.');
+        }
+        
+        results.push('═════════════════════');
+        
+        await UI.printLines(results, 'diagnostic');
+        
+        if (!job.diagnosticsRun) {
+            job.diagnosticsRun = [];
+        }
+        job.diagnosticsRun.push('tire machine check');
+        
+        Storage.save(this.state);
+        await this.showDiagnosticsOptions();
+    },
+    
+    /**
+     * Run A/C check (available when A/C machine is owned)
+     */
+    async runACCheck() {
+        UI.clearActions();
+        
+        await UI.printLine('connecting A/C machine...', 'action');
+        await UI.delay(500);
+        
+        const job = this.state.currentJob;
+        const results = [
+            '═══ A/C REPORT ═══',
+            'System pressure test: running...',
+            'Refrigerant level: checking...'
+        ];
+        
+        // Check if A/C is part of the solution
+        const allRepairs = [...(job.solution.correctRepairs || []), ...(job.solution.acceptableRepairs || [])];
+        if (allRepairs.some(r => r.includes('ac') || r.includes('a/c') || r.includes('refrigerant'))) {
+            results.push('ISSUE DETECTED: A/C system fault');
+            results.push('Low refrigerant or leak detected');
+        } else {
+            results.push('A/C system: No issues detected');
+        }
+        
+        results.push('═════════════════════');
+        
+        await UI.printLines(results, 'diagnostic');
+        
+        if (!job.diagnosticsRun) {
+            job.diagnosticsRun = [];
+        }
+        job.diagnosticsRun.push('a/c machine check');
+        
+        Storage.save(this.state);
+        await this.showDiagnosticsOptions();
+    },
+    
+    /**
+     * Run alignment check (available when alignment rig is owned)
+     */
+    async runAlignmentCheck() {
+        UI.clearActions();
+        
+        await UI.printLine('positioning on alignment rig...', 'action');
+        await UI.delay(500);
+        
+        const job = this.state.currentJob;
+        const results = [
+            '═══ ALIGNMENT REPORT ═══',
+            'Front toe: checking...',
+            'Camber: checking...',
+            'Caster: checking...'
+        ];
+        
+        // Check if alignment/suspension is part of the solution
+        const allRepairs = [...(job.solution.correctRepairs || []), ...(job.solution.acceptableRepairs || [])];
+        if (allRepairs.some(r => r.includes('alignment') || r.includes('suspension') || r.includes('arm') || r.includes('link'))) {
+            results.push('ISSUE DETECTED: Alignment out of spec');
+            results.push('Recommendation: Full alignment needed');
+        } else {
+            results.push('Alignment: Within specifications');
+        }
+        
+        results.push('═════════════════════════');
+        
+        await UI.printLines(results, 'diagnostic');
+        
+        if (!job.diagnosticsRun) {
+            job.diagnosticsRun = [];
+        }
+        job.diagnosticsRun.push('alignment rig check');
+        
+        Storage.save(this.state);
+        await this.showDiagnosticsOptions();
+    },
+    
+    /**
+     * Run welder check (available when welder is owned)
+     */
+    async runWelderCheck() {
+        UI.clearActions();
+        
+        await UI.printLine('inspecting exhaust and frame...', 'action');
+        await UI.delay(500);
+        
+        const job = this.state.currentJob;
+        const results = [
+            '═══ WELDING INSPECTION ═══',
+            'Exhaust system: checking...',
+            'Frame/undercarriage: checking...',
+            'Looking for rust, cracks, damage...'
+        ];
+        
+        // Check if welding-related repairs are part of the solution
+        const allRepairs = [...(job.solution.correctRepairs || []), ...(job.solution.acceptableRepairs || [])];
+        if (allRepairs.some(r => r.includes('exhaust') || r.includes('pipe') || r.includes('muffler') || r.includes('weld'))) {
+            results.push('ISSUE DETECTED: Exhaust/welding repair needed');
+            results.push('Can be fixed with welder');
+        } else {
+            results.push('No welding repairs needed for this job.');
+        }
+        
+        results.push('═══════════════════════════');
+        
+        await UI.printLines(results, 'diagnostic');
+        
+        if (!job.diagnosticsRun) {
+            job.diagnosticsRun = [];
+        }
+        job.diagnosticsRun.push('welder inspection');
+        
+        Storage.save(this.state);
+        await this.showDiagnosticsOptions();
+    },
+    
+    /**
+     * Run paint check (available when spray gun is owned)
+     */
+    async runPaintCheck() {
+        UI.clearActions();
+        
+        await UI.printLine('examining paint and body...', 'action');
+        await UI.delay(500);
+        
+        const job = this.state.currentJob;
+        const results = [
+            '═══ PAINT/BODY REPORT ═══',
+            'Paint condition: checking...',
+            'Body panels: checking...',
+            'Looking for scratches, dents, rust...'
+        ];
+        
+        // Check if paint-related repairs are part of the solution
+        const allRepairs = [...(job.solution.correctRepairs || []), ...(job.solution.acceptableRepairs || [])];
+        if (allRepairs.some(r => r.includes('paint') || r.includes('body') || r.includes('panel') || r.includes('primer'))) {
+            results.push('ISSUE DETECTED: Paint/body work needed');
+            results.push('Can be addressed with spray gun');
+        } else {
+            results.push('No paint work needed for this job.');
+        }
+        
+        results.push('══════════════════════════');
+        
+        await UI.printLines(results, 'diagnostic');
+        
+        if (!job.diagnosticsRun) {
+            job.diagnosticsRun = [];
+        }
+        job.diagnosticsRun.push('spray gun inspection');
+        
+        Storage.save(this.state);
+        await this.showDiagnosticsOptions();
+    },
+    
+    /**
+     * Run engine hoist check (available when engine hoist is owned)
+     */
+    async runEngineHoistCheck() {
+        UI.clearActions();
+        
+        await UI.printLine('preparing engine hoist...', 'action');
+        await UI.delay(500);
+        
+        const job = this.state.currentJob;
+        const results = [
+            '═══ ENGINE INSPECTION ═══',
+            'Engine mounts: checking...',
+            'Oil pan: checking...',
+            'Transmission: checking...',
+            'Major components: accessible'
+        ];
+        
+        // Check if engine-related repairs are part of the solution
+        const allRepairs = [...(job.solution.correctRepairs || []), ...(job.solution.acceptableRepairs || [])];
+        if (allRepairs.some(r => r.includes('engine') || r.includes('motor') || r.includes('head') || r.includes('gasket') || r.includes('clutch'))) {
+            results.push('ISSUE DETECTED: Major engine work needed');
+            results.push('Engine pull recommended');
+        } else {
+            results.push('No major engine work required.');
+        }
+        
+        results.push('══════════════════════════');
+        
+        await UI.printLines(results, 'diagnostic');
+        
+        if (!job.diagnosticsRun) {
+            job.diagnosticsRun = [];
+        }
+        job.diagnosticsRun.push('engine hoist inspection');
+        
+        Storage.save(this.state);
+        await this.showDiagnosticsOptions();
     },
     
     /**
@@ -475,10 +886,22 @@ const Game = {
     async runDiagnostic(diagnostic) {
         UI.clearActions();
         
-        // Deduct cost
+        // Deduct cost only if not using owned equipment
+        // Diagnostic scanner makes scanner-based diagnostics free
         if (diagnostic.cost > 0) {
-            this.state.money -= diagnostic.cost;
-            UI.updateMoney(this.state.money, -diagnostic.cost);
+            // Check if this is a scanner diagnostic and player owns the scanner
+            const isScannerDiagnostic = diagnostic.requiresUpgrade === 'hasDiagnosticScanner' ||
+                                        diagnostic.action.toLowerCase().includes('scanner') ||
+                                        diagnostic.action.toLowerCase().includes('diagnostic scan');
+            
+            if (isScannerDiagnostic && this.state.garage.hasDiagnosticScanner) {
+                // Free - we own the scanner
+                await UI.printLine('using your diagnostic scanner...', 'action');
+            } else {
+                // Still charge for non-scanner diagnostics or if we don't own the scanner
+                this.state.money -= diagnostic.cost;
+                UI.updateMoney(this.state.money, -diagnostic.cost);
+            }
         }
         
         // Track diagnostic
