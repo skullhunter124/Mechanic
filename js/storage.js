@@ -146,7 +146,8 @@ const Storage = {
                 hasTwoLifts: false,
                 hasAlignmentRig: false
             },
-            currentJob: null,
+            currentJob: null,           // Job currently on the lift
+            setAsideJobs: [],           // Jobs set aside while waiting for parts
             waitingCars: [],
             completedJobs: 0,
             reputation_history: [],

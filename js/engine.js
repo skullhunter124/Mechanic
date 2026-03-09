@@ -255,6 +255,58 @@ const Engine = {
         
         return state;
     },
+    
+    /**
+     * Set aside current job (move off lift but keep in progress)
+     * @param {Object} state - Game state
+     * @returns {Object} Updated state
+     */
+    setAsideCurrentJob(state) {
+        if (!state.currentJob) return state;
+        
+        // Initialize setAsideJobs if needed
+        if (!state.setAsideJobs) state.setAsideJobs = [];
+        
+        // Move current job to set aside
+        state.setAsideJobs.push(state.currentJob);
+        state.currentJob = null;
+        
+        return state;
+    },
+    
+    /**
+     * Resume a set-aside job (put back on lift)
+     * @param {Object} state - Game state
+     * @param {number} index - Index of set-aside job to resume
+     * @returns {Object} Updated state
+     */
+    resumeJob(state, index) {
+        if (!state.setAsideJobs || state.setAsideJobs.length === 0) return state;
+        if (state.currentJob) return state; // Lift is occupied
+        
+        const job = state.setAsideJobs.splice(index, 1)[0];
+        state.currentJob = job;
+        
+        return state;
+    },
+    
+    /**
+     * Get max number of lifts available
+     * @param {Object} state - Game state
+     * @returns {number} Number of lifts
+     */
+    getMaxLifts(state) {
+        return state.garage.hasTwoLifts ? 2 : 1;
+    },
+    
+    /**
+     * Check if lift is available
+     * @param {Object} state - Game state
+     * @returns {boolean} True if lift is free
+     */
+    isLiftAvailable(state) {
+        return !state.currentJob;
+    },
 
     /**
      * Run a diagnostic on current job

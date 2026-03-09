@@ -115,6 +115,7 @@ body {
 }
 
 #lift-status h3,
+#set-aside-jobs h3,
 #waiting-cars h3,
 #upgrades-section h3 {
     font-size: 0.75rem;
@@ -127,6 +128,33 @@ body {
 
 #current-job {
     font-style: italic;
+}
+
+#set-aside-jobs {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+#set-aside-list {
+    list-style: none;
+}
+
+#set-aside-list li {
+    padding: 4px 0;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+#set-aside-list li:hover {
+    color: var(--accent);
+}
+
+#set-aside-list li .job-status {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-left: 8px;
 }
 
 #waiting-list {

@@ -274,50 +274,54 @@ const Game = {
     },
 
     /**
-     * Prompt player to start a job
+     * Prompt player to start a job or resume a set-aside job
      */
     async promptStartJob() {
         const waitingCars = this.state.waitingCars;
+        const setAsideJobs = this.state.setAsideJobs || [];
         
-        if (waitingCars.length === 0) {
+        // Build button options
+        const buttons = [];
+        
+        // Add set-aside jobs that can be resumed
+        if (setAsideJobs.length > 0) {
+            setAsideJobs.forEach((job, index) => {
+                buttons.push({
+                    text: `resume: ${job.customer.name}'s ${job.car.make}`,
+                    onClick: () => this.resumeSetAsideJob(index),
+                    options: { className: 'primary' }
+                });
+            });
+        }
+        
+        // Add waiting cars
+        if (waitingCars.length > 0) {
+            waitingCars.forEach((car, index) => {
+                buttons.push({
+                    text: `bring in: ${car.customer.name}'s ${car.car.make} ${car.car.model}`,
+                    onClick: () => this.startJob(index),
+                    options: {}
+                });
+            });
+        }
+        
+        // If no options available
+        if (buttons.length === 0) {
             this.phase = 'idle';
             this.gameLoop();
             return;
         }
         
-        // If only one car, offer to start it
-        if (waitingCars.length === 1) {
-            const car = waitingCars[0];
-            await UI.printLine(`${car.customer.name}'s ${car.car.make} ${car.car.model} is waiting.`, 'system');
-            
-            UI.showButtons([
-                {
-                    text: 'bring it in',
-                    onClick: () => this.startJob(0),
-                    options: { className: 'primary' }
-                },
-                {
-                    text: 'let them wait',
-                    onClick: () => this.showWaitButton(),
-                    options: {}
-                }
-            ]);
-        } else {
-            // Multiple cars, show options
-            const buttons = waitingCars.map((car, index) => ({
-                text: `${car.customer.name}'s ${car.car.make} ${car.car.model}`,
-                onClick: () => this.startJob(index),
-                options: {}
-            }));
-            
+        // Add wait button if there are waiting cars
+        if (waitingCars.length > 0) {
             buttons.push({
                 text: 'let them wait',
                 onClick: () => this.showWaitButton(),
                 options: {}
             });
-            
-            UI.showButtons(buttons);
         }
+        
+        UI.showButtons(buttons);
     },
 
     /**
@@ -368,6 +372,13 @@ const Game = {
             options: { className: 'primary' }
         });
         
+        // Add "set aside" option to move car off lift
+        buttons.push({
+            text: 'move off lift',
+            onClick: () => this.setAsideCurrentJob(),
+            options: {}
+        });
+        
         buttons.push({
             text: 'cancel job',
             onClick: () => this.cancelJob(),
@@ -375,6 +386,41 @@ const Game = {
         });
         
         UI.showButtons(buttons);
+    },
+    
+    /**
+     * Set aside current job (move off lift)
+     */
+    async setAsideCurrentJob() {
+        if (!this.state.currentJob) return;
+        
+        const jobName = `${this.state.currentJob.customer.name}'s ${this.state.currentJob.car.make}`;
+        
+        this.state = Engine.setAsideCurrentJob(this.state);
+        UI.updateCurrentJob(null);
+        UI.updateSetAsideJobs(this.state.setAsideJobs || []);
+        Storage.save(this.state);
+        
+        await UI.printLine(`${jobName} moved off lift.`, 'action');
+        
+        this.phase = 'idle';
+        this.gameLoop();
+    },
+    
+    /**
+     * Resume a set-aside job
+     */
+    async resumeSetAsideJob(index) {
+        this.state = Engine.resumeJob(this.state, index);
+        UI.updateCurrentJob(this.state.currentJob);
+        UI.updateSetAsideJobs(this.state.setAsideJobs || []);
+        Storage.save(this.state);
+        
+        const job = this.state.currentJob;
+        await UI.printLine(`${job.customer.name}'s ${job.car.make} back on lift.`, 'action');
+        
+        this.phase = 'diagnostics';
+        await this.showDiagnosticsOptions();
     },
 
     /**

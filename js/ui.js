@@ -38,6 +38,8 @@ const UI = {
             // Garage panel
             garageDescription: document.getElementById('garage-description'),
             currentJob: document.getElementById('current-job'),
+            setAsideJobs: document.getElementById('set-aside-jobs'),
+            setAsideList: document.getElementById('set-aside-list'),
             waitingList: document.getElementById('waiting-list'),
             timeOfDay: document.getElementById('time-of-day'),
             dayCounter: document.getElementById('day-counter'),
@@ -534,6 +536,27 @@ const UI = {
             `).join('');
         }
     },
+    
+    /**
+     * Update set-aside jobs list
+     * @param {Array} jobs - Array of set-aside jobs
+     */
+    updateSetAsideJobs(jobs) {
+        if (!this.elements.setAsideJobs || !this.elements.setAsideList) return;
+        
+        if (!jobs || jobs.length === 0) {
+            this.elements.setAsideJobs.classList.add('hidden');
+            this.elements.setAsideList.innerHTML = '';
+        } else {
+            this.elements.setAsideJobs.classList.remove('hidden');
+            this.elements.setAsideList.innerHTML = jobs.map((job, index) => `
+                <li class="set-aside-job clickable" data-index="${index}">
+                    ${job.customer.name}'s ${job.car.make}
+                    <span class="job-status">(waiting)</span>
+                </li>
+            `).join('');
+        }
+    },
 
     /**
      * Update orders section
@@ -736,6 +759,7 @@ const UI = {
         this.updateJobsCount(state.completedJobs);
         this.updateCurrentJob(state.currentJob);
         this.updateWaitingCars(state.waitingCars);
+        this.updateSetAsideJobs(state.setAsideJobs || []);
         this.updateGarageDescription(state.garage);
         
         // Update orders
