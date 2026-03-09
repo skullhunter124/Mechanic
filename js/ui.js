@@ -552,12 +552,15 @@ const UI = {
             list.innerHTML = '';
         } else {
             container.classList.remove('hidden');
-            list.innerHTML = jobs.map((job, index) => `
-                <li class="set-aside-job clickable" data-index="${index}">
-                    ${job.customer.name}'s ${job.car.make}
-                    <span class="job-status">(waiting)</span>
-                </li>
-            `).join('');
+            list.innerHTML = jobs.map((job, index) => {
+                const statusText = job.orderedParts ? '(waiting for parts)' : '(set aside)';
+                return `
+                    <li class="set-aside-job clickable" data-index="${index}">
+                        ${job.customer.name}'s ${job.car.make}
+                        <span class="job-status">${statusText}</span>
+                    </li>
+                `;
+            }).join('');
         }
     },
 

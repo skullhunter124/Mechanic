@@ -245,6 +245,9 @@ const Game = {
         
         await UI.printLine('closing up for the day...', 'system');
         
+        // Store recap before processing (in case rent is due)
+        const weeklyRecap = this.state.lastWeekRecap;
+        
         this.state = Engine.endDay(this.state);
         UI.updateAll(this.state);
         Storage.save(this.state);
@@ -265,6 +268,11 @@ const Game = {
             return;
         }
         
+        // Show week recap if rent was just paid
+        if (weeklyRecap) {
+            await this.showWeekRecap(weeklyRecap);
+        }
+        
         await UI.printLine(`day ${this.state.day}. ${this.state.timeOfDay}.`, 'time-pass');
         
         // Check rent warning
@@ -274,6 +282,21 @@ const Game = {
         
         this.phase = 'idle';
         this.gameLoop();
+    },
+    
+    /**
+     * Show weekly recap after paying rent
+     */
+    async showWeekRecap(recap) {
+        UI.printDivider();
+        await UI.printLine('rent paid.', 'system');
+        await UI.printLine(`week recap:`, 'system');
+        await UI.printLine(`  ${recap.jobsCompleted} job${recap.jobsCompleted !== 1 ? 's' : ''} completed`, 'diagnostic');
+        await UI.printLine(`  €${recap.earnings} earned`, 'diagnostic');
+        UI.printDivider();
+        
+        // Clear the recap after displaying
+        delete this.state.lastWeekRecap;
     },
 
     /**
@@ -289,10 +312,14 @@ const Game = {
         // Add set-aside jobs that can be resumed
         if (setAsideJobs.length > 0) {
             setAsideJobs.forEach((job, index) => {
+                // Check if parts have arrived for this job
+                const partsReady = job.orderedParts && Engine.partsAvailable(this.state, job.orderedParts);
+                const statusText = job.orderedParts ? (partsReady ? ' (parts ready!)' : ' (waiting for parts)') : '';
+                
                 buttons.push({
-                    text: `resume: ${job.customer.name}'s ${job.car.make}`,
+                    text: `resume: ${job.customer.name}'s ${job.car.make}${statusText}`,
                     onClick: () => this.resumeSetAsideJob(index),
-                    options: { className: 'primary' }
+                    options: { className: partsReady ? 'primary' : '' }
                 });
             });
         }
@@ -315,10 +342,10 @@ const Game = {
             return;
         }
         
-        // Add wait button if there are waiting cars
-        if (waitingCars.length > 0) {
+        // Add wait button if there are waiting cars OR set-aside jobs (lift is free)
+        if (waitingCars.length > 0 || setAsideJobs.length > 0) {
             buttons.push({
-                text: 'let them wait',
+                text: waitingCars.length > 0 ? 'let them wait' : 'wait for customers',
                 onClick: () => this.showWaitButton(),
                 options: {}
             });
@@ -422,8 +449,21 @@ const Game = {
         const job = this.state.currentJob;
         await UI.printLine(`${job.customer.name}'s ${job.car.make} back on lift.`, 'action');
         
-        this.phase = 'diagnostics';
-        await this.showDiagnosticsOptions();
+        // Check if this job has ordered parts
+        if (job.orderedParts && job.orderedParts.length > 0) {
+            // Check if parts have arrived
+            if (Engine.partsAvailable(this.state, job.orderedParts)) {
+                await UI.printLine('parts arrived. ready to install.', 'action');
+                await this.completeRepair(job.orderedParts);
+            } else {
+                await UI.printLine('still waiting for parts...', 'system');
+                this.phase = 'ordering';
+                this.waitForParts(job.orderedParts);
+            }
+        } else {
+            this.phase = 'diagnostics';
+            await this.showDiagnosticsOptions();
+        }
     },
 
     /**
@@ -712,6 +752,9 @@ const Game = {
                     
                     await UI.printLine('closing up for the day...', 'system');
                     
+                    // Store recap before processing (in case rent is due)
+                    const weeklyRecap = this.state.lastWeekRecap;
+                    
                     this.state = Engine.endDay(this.state);
                     UI.updateAll(this.state);
                     Storage.save(this.state);
@@ -720,6 +763,11 @@ const Game = {
                     if (this.state.gameOver) {
                         this.handleGameOver();
                         return;
+                    }
+                    
+                    // Show week recap if rent was just paid
+                    if (weeklyRecap) {
+                        await this.showWeekRecap(weeklyRecap);
                     }
                     
                     // Check if parts arrived
@@ -755,7 +803,36 @@ const Game = {
             });
         }
         
+        // Add option to set aside job while waiting for parts
+        buttons.push({
+            text: 'move off lift (wait for parts)',
+            onClick: () => this.setAsideJobWaitingForParts(partIds),
+            options: {}
+        });
+        
         UI.showButtons(buttons);
+    },
+    
+    /**
+     * Set aside current job while waiting for parts
+     */
+    async setAsideJobWaitingForParts(partIds) {
+        if (!this.state.currentJob) return;
+        
+        // Store the ordered parts with the job for later
+        this.state.currentJob.orderedParts = partIds;
+        
+        const jobName = `${this.state.currentJob.customer.name}'s ${this.state.currentJob.car.make}`;
+        
+        this.state = Engine.setAsideCurrentJob(this.state);
+        UI.updateCurrentJob(null);
+        UI.updateSetAsideJobs(this.state.setAsideJobs || []);
+        Storage.save(this.state);
+        
+        await UI.printLine(`${jobName} moved off lift. waiting for parts.`, 'action');
+        
+        this.phase = 'idle';
+        this.gameLoop();
     },
 
     /**

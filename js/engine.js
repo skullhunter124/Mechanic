@@ -465,6 +465,10 @@ const Engine = {
         state.reputation = Math.max(0, Math.min(100, state.reputation + outcome.reputationChange));
         state.completedJobs++;
         
+        // Track weekly stats
+        state.weeklyJobsCompleted = (state.weeklyJobsCompleted || 0) + 1;
+        state.weeklyEarnings = (state.weeklyEarnings || 0) + outcome.payment;
+        
         // Track reputation history
         state.reputation_history.push({
             type: outcomeType,
