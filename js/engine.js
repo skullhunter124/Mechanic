@@ -77,9 +77,21 @@ const Engine = {
      */
     processRent(state) {
         if (state.money >= state.rent) {
+            // Store weekly stats for recap before resetting
+            const weeklyRecap = {
+                jobsCompleted: state.weeklyJobsCompleted || 0,
+                earnings: state.weeklyEarnings || 0
+            };
+            
             state.money -= state.rent;
             state.rentDueIn = 7;
-            // Will trigger UI message
+            
+            // Reset weekly stats
+            state.weeklyJobsCompleted = 0;
+            state.weeklyEarnings = 0;
+            
+            // Store recap for UI to display
+            state.lastWeekRecap = weeklyRecap;
         } else {
             state.gameOver = true;
             state.gameOverReason = 'rent';

@@ -150,6 +150,9 @@ const Storage = {
             setAsideJobs: [],           // Jobs set aside while waiting for parts
             waitingCars: [],
             completedJobs: 0,
+            // Weekly tracking
+            weeklyJobsCompleted: 0,
+            weeklyEarnings: 0,
             reputation_history: [],
             unlockedScenarios: [],
             orders: [],
