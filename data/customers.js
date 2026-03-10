@@ -303,7 +303,7 @@ const CUSTOMERS = [
         },
         outcomes: {
             correct: {
-                payment: 65,
+                payment: 650,
                 reputationChange: 3,
                 dialogue: [
                     'you drain the old oil.',
@@ -6527,6 +6527,2176 @@ const CUSTOMERS = [
                     'he went somewhere faster.',
                     'probably still leaking.',
                     'probably still late.'
+                ]
+            }
+        }
+    },
+
+    // ═══════════════════════════════════════════
+    // ENGINE SWAP SCENARIOS (Requires Engine Hoist)
+    // ═══════════════════════════════════════════
+
+    // 57. The blown engine - first engine swap
+    {
+        id: 'golf_blown_engine_01',
+        minReputation: 45,
+        maxReputation: 100,
+        requiresUpgrade: 'hasEngineHoist',
+        car: {
+            make: 'Volkswagen',
+            model: 'Golf GTI',
+            year: 2002,
+            condition: 'rough'
+        },
+        customer: {
+            name: 'Lukas',
+            personality: 'enthusiast',
+            budget: 'medium',
+            patience: 5,
+            arrival: [
+                'a golf gti rolls in on the back of a tow truck.',
+                'the driver steps out. young. grease under his fingernails.',
+                '"i pushed it too hard," he says.',
+                '"threw a rod through the block."',
+                'he looks at the car like a wounded pet.',
+                '"can you swap the engine? i found a used one."'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'inspect the damaged engine',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'you open the hood.',
+                    'there\'s a hole in the block.',
+                    'oil everywhere.',
+                    'this engine is done.',
+                    'beyond done.',
+                    'a replacement is the only option.'
+                ]
+            },
+            {
+                action: 'check the replacement engine',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'lukas has a 1.8T engine in his pickup.',
+                    'compression test shows 150psi across all cylinders.',
+                    'looks like a good unit.',
+                    'turbo spins freely.',
+                    'this could work.'
+                ]
+            },
+            {
+                action: 'run diagnostic scan',
+                cost: 15,
+                time: 0,
+                requiresUpgrade: 'hasDiagnosticScanner',
+                reveals: [
+                    'no codes on the replacement ECU.',
+                    'immobilizer will need to be synced.',
+                    'wiring harness looks compatible.',
+                    'should be a straightforward swap.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['engine_4cyl_turbo', 'engine_swap_kit', 'engine_oil', 'coolant'],
+            acceptableRepairs: ['engine_4cyl_turbo', 'engine_swap_kit'],
+            wrongRepairs: ['engine_v6', 'head_gasket', 'engine_oil']
+        },
+        outcomes: {
+            correct: {
+                payment: 1500,
+                reputationChange: 18,
+                dialogue: [
+                    'three days of work.',
+                    'the engine drops in.',
+                    'wiring connected. fluids filled.',
+                    'you turn the key.',
+                    'it coughs. catches. runs.',
+                    'the turbo whistles.',
+                    'lukas is grinning.',
+                    '"she lives," he says.',
+                    'he shakes your hand.',
+                    'real firm.',
+                    'this is why you do this.'
+                ]
+            },
+            partial: {
+                payment: 900,
+                reputationChange: 10,
+                dialogue: [
+                    'the engine is in.',
+                    'it runs.',
+                    'rough at idle.',
+                    'probably needs tuning.',
+                    'lukas doesn\'t seem to mind.',
+                    '"i\'ll sort it out," he says.',
+                    'at least it runs.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -20,
+                dialogue: [
+                    'you ordered the wrong parts.',
+                    'the engine sits on a pallet.',
+                    'lukas is understanding.',
+                    'but disappointed.',
+                    '"i thought you knew these cars."',
+                    'so did you.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -10,
+                dialogue: [
+                    'lukas got tired of waiting.',
+                    'towed the golf somewhere else.',
+                    'probably to someone who could finish the job.'
+                ]
+            }
+        }
+    },
+
+    // 58. The diesel conversion
+    {
+        id: 'tdi_conversion_01',
+        minReputation: 55,
+        maxReputation: 100,
+        requiresUpgrade: 'hasEngineHoist',
+        car: {
+            make: 'Volkswagen',
+            model: 'Golf',
+            year: 1999,
+            condition: 'average'
+        },
+        customer: {
+            name: 'Heinrich',
+            personality: 'practical',
+            budget: 'medium',
+            patience: 6,
+            arrival: [
+                'an older man in a practical jacket.',
+                'he drives a beat-up golf.',
+                '"the petrol engine is dead," he says.',
+                '"i want to put a TDI in it."',
+                '"fuel economy. reliability."',
+                '"can you do it?"',
+                'he has spreadsheets. actual spreadsheets.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'inspect the car',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'the petrol engine is indeed dead.',
+                    'blown head gasket. cracked head.',
+                    'not worth fixing.',
+                    'the rest of the car is solid.',
+                    'good candidate for a swap.'
+                ]
+            },
+            {
+                action: 'check the TDI engine',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'he has a 1.9 TDI from a wrecked car.',
+                    '150,000 km on it.',
+                    'well maintained.',
+                    'comes with ECU and wiring.',
+                    'this is a lot of work.',
+                    'but doable.'
+                ]
+            },
+            {
+                action: 'assess conversion requirements',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'fuel lines need changing.',
+                    'different fuel pump.',
+                    'glow plug wiring.',
+                    'exhaust modifications.',
+                    'this is a full conversion.',
+                    'not just an engine swap.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['engine_diesel_4cyl', 'engine_conversion_parts', 'fuel_pump', 'engine_wiring_harness'],
+            acceptableRepairs: ['engine_diesel_4cyl', 'engine_conversion_parts'],
+            wrongRepairs: ['engine_4cyl_standard', 'fuel_injector', 'spark_plugs']
+        },
+        outcomes: {
+            correct: {
+                payment: 2200,
+                reputationChange: 25,
+                dialogue: [
+                    'a week of work.',
+                    'the TDI fires up on the first glow.',
+                    'that distinctive diesel clatter.',
+                    'heinrich checks his spreadsheet.',
+                    '"four point five liters per hundred," he says.',
+                    '"as calculated."',
+                    'he\'s actually smiling.',
+                    'spreadsheets and all.'
+                ]
+            },
+            partial: {
+                payment: 1400,
+                reputationChange: 12,
+                dialogue: [
+                    'the engine is in.',
+                    'it runs.',
+                    'check engine light is on.',
+                    'probably a sensor issue.',
+                    'heinrich will monitor it.',
+                    'he has a spreadsheet for that too.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -18,
+                dialogue: [
+                    'you tried to put petrol parts on a diesel.',
+                    'heinrich is not pleased.',
+                    '"i gave you the specifications."',
+                    '"very clear specifications."',
+                    'he takes his spreadsheets elsewhere.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -8,
+                dialogue: [
+                    'heinrich found someone faster.',
+                    'probably someone who reads spreadsheets.',
+                    'more carefully.'
+                ]
+            }
+        }
+    },
+
+    // 59. The V8 swap
+    {
+        id: 'e36_v8_swap_01',
+        minReputation: 70,
+        maxReputation: 100,
+        requiresUpgrade: 'hasEngineHoist',
+        car: {
+            make: 'BMW',
+            model: '318i',
+            year: 1995,
+            condition: 'good'
+        },
+        customer: {
+            name: 'Maximilian',
+            personality: 'ambitious',
+            budget: 'high',
+            patience: 7,
+            arrival: [
+                'a bmw e36 rolls in.',
+                'the driver is young. confident.',
+                '"the four cylinder is boring," he says.',
+                '"i want to put a V8 in it."',
+                '"an M62. from a 540i."',
+                'he shows you renderings.',
+                'he\'s planned the whole thing.',
+                'this is either brilliant or insane.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'inspect the car',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'the 318i is in good shape.',
+                    'rust free. straight body.',
+                    'the four cylinder runs fine.',
+                    'shame to take it out.',
+                    'but maximilian has a vision.'
+                ]
+            },
+            {
+                action: 'inspect the V8',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'the M62 V8 is on an engine stand.',
+                    '4.4 liters. 282 horsepower.',
+                    'much more than the 1.8 liter four.',
+                    'oil leaks fixed. chains replaced.',
+                    'it\'s been rebuilt.',
+                    'maximilian spared no expense.'
+                ]
+            },
+            {
+                action: 'assess swap requirements',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'custom engine mounts needed.',
+                    'driveshaft modification.',
+                    'bigger radiator.',
+                    'exhaust fabrication.',
+                    'this is a major project.',
+                    'but everything is ready.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['engine_v8', 'engine_conversion_parts', 'radiator', 'ecu_engine'],
+            acceptableRepairs: ['engine_v8', 'engine_conversion_parts'],
+            wrongRepairs: ['engine_4cyl_standard', 'turbocharger', 'engine_4cyl_turbo']
+        },
+        outcomes: {
+            correct: {
+                payment: 3800,
+                reputationChange: 28,
+                dialogue: [
+                    'two weeks of work.',
+                    'the V8 sits in the engine bay.',
+                    'tight fit. but it fits.',
+                    'you turn the key.',
+                    'the V8 rumbles to life.',
+                    'the whole car shakes.',
+                    'maximilian is speechless.',
+                    'then he laughs.',
+                    '"it lives," he says.',
+                    'a monster is born.'
+                ]
+            },
+            partial: {
+                payment: 2900,
+                reputationChange: 15,
+                dialogue: [
+                    'the engine is in.',
+                    'it runs.',
+                    'needs more work on the cooling.',
+                    'runs hot in traffic.',
+                    'but maximilian is happy.',
+                    '"we\'ll sort it," he says.',
+                    '"together."'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -25,
+                dialogue: [
+                    'you tried to put a four cylinder back in.',
+                    'or ordered the wrong V8 parts.',
+                    'maximilian is disappointed.',
+                    '"i expected more," he says.',
+                    '"from someone with your reputation."',
+                    'that stings.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -12,
+                dialogue: [
+                    'maximilian got impatient.',
+                    'took the car to a specialist.',
+                    'probably the right call.',
+                    'for a project this big.'
+                ]
+            }
+        }
+    },
+
+    // 60. The rotary revival
+    {
+        id: 'rx7_rotary_01',
+        minReputation: 65,
+        maxReputation: 100,
+        requiresUpgrade: 'hasEngineHoist',
+        car: {
+            make: 'Mazda',
+            model: 'RX-7',
+            year: 1993,
+            condition: 'rough'
+        },
+        customer: {
+            name: 'Kenji',
+            personality: 'passionate',
+            budget: 'high',
+            patience: 6,
+            arrival: [
+                'an rx-7 is pushed into the lot.',
+                'the driver is japanese. quiet intensity.',
+                '"the apex seals are gone," he says.',
+                '"i have a rebuilt 13B."',
+                '"bridge ported. semi-peripheral."',
+                'he speaks the rotary language.',
+                'this is going to be interesting.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'inspect the old engine',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'you try to start it.',
+                    'it cranks. doesn\'t fire.',
+                    'low compression on the rear rotor.',
+                    'apex seals are definitely gone.',
+                    'this engine is a boat anchor.'
+                ]
+            },
+            {
+                action: 'inspect the rebuilt engine',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'the rebuilt 13B is beautiful.',
+                    'porting work is aggressive.',
+                    'this will make big power.',
+                    'and drink fuel like a V8.',
+                    'kenji knows what he wants.'
+                ]
+            },
+            {
+                action: 'check supporting modifications',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'upgraded fuel pump.',
+                    'larger intercooler.',
+                    'aftermarket ECU.',
+                    'kenji brought everything.',
+                    'this is a well-planned build.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['engine_rotary', 'engine_swap_kit', 'fuel_pump', 'intercooler', 'ecu_engine'],
+            acceptableRepairs: ['engine_rotary', 'engine_swap_kit'],
+            wrongRepairs: ['engine_4cyl_turbo', 'engine_v6', 'turbocharger']
+        },
+        outcomes: {
+            correct: {
+                payment: 2800,
+                reputationChange: 25,
+                dialogue: [
+                    'the rotary drops in.',
+                    'everything connects.',
+                    'pre-mix in the fuel. prime the oil.',
+                    'you turn the key.',
+                    'it fires. brap. brap. brap.',
+                    'that unmistakable rotary sound.',
+                    'kenji closes his eyes.',
+                    'listening.',
+                    '"perfect," he says.',
+                    'you agree.'
+                ]
+            },
+            partial: {
+                payment: 2200,
+                reputationChange: 14,
+                dialogue: [
+                    'the engine is in.',
+                    'it runs.',
+                    'running rich.',
+                    'needs tuning.',
+                    'but it lives.',
+                    'kenji is satisfied.',
+                    'for now.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -22,
+                dialogue: [
+                    'you tried to put piston engine parts on a rotary.',
+                    'kenji is not happy.',
+                    '"a rotary is not a piston engine," he says.',
+                    '"you should know this."',
+                    'he\'s right.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -10,
+                dialogue: [
+                    'kenji ran out of patience.',
+                    'took the rx-7 to a rotary specialist.',
+                    'probably for the best.'
+                ]
+            }
+        }
+    },
+
+    // ═══════════════════════════════════════════
+    // EXPANDED VEHICLE SCENARIOS
+    // ═══════════════════════════════════════════
+
+    // 61. The electric car problem
+    {
+        id: 'tesla_dead_battery_01',
+        minReputation: 50,
+        maxReputation: 100,
+        requiresUpgrade: 'hasDiagnosticScanner',
+        car: {
+            make: 'Tesla',
+            model: 'Model S',
+            year: 2014,
+            condition: 'average'
+        },
+        customer: {
+            name: 'Sophie',
+            personality: 'frustrated',
+            budget: 'high',
+            patience: 3,
+            arrival: [
+                'a model s rolls in silently.',
+                'the driver looks exhausted.',
+                '"the car says service required," she says.',
+                '"the dealership wants eight thousand."',
+                '"for a battery module."',
+                '"can you help?"',
+                'electric cars. new territory.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'run diagnostic scan',
+                cost: 15,
+                time: 0,
+                requiresUpgrade: 'hasDiagnosticScanner',
+                reveals: [
+                    'you plug in the scanner.',
+                    'battery management system codes.',
+                    'module 3 is degraded.',
+                    'but the rest are fine.',
+                    'you can replace just one module.',
+                    'not the whole pack.'
+                ]
+            },
+            {
+                action: 'inspect the battery pack',
+                cost: 0,
+                time: 2,
+                requiresUpgrade: null,
+                reveals: [
+                    'the car is on jack stands.',
+                    'battery pack is accessible.',
+                    'module 3 is swollen.',
+                    'definitely the problem.',
+                    'this is fixable.',
+                    'with the right parts.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['hybrid_battery', 'coolant'],
+            acceptableRepairs: ['hybrid_battery'],
+            wrongRepairs: ['battery', 'alternator', 'starter_motor']
+        },
+        outcomes: {
+            correct: {
+                payment: 2200,
+                reputationChange: 20,
+                dialogue: [
+                    'you replace the bad module.',
+                    'reset the BMS.',
+                    'the car wakes up.',
+                    'full range restored.',
+                    'sophie is relieved.',
+                    '"you saved me six thousand," she says.',
+                    'electric cars aren\'t so bad.',
+                    'when you know what you\'re doing.'
+                ]
+            },
+            partial: {
+                payment: 1800,
+                reputationChange: 12,
+                dialogue: [
+                    'the module is replaced.',
+                    'car runs.',
+                    'range is okay.',
+                    'not perfect.',
+                    'but sophie is happy.',
+                    'that\'s what matters.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -18,
+                dialogue: [
+                    'you tried to put a 12v battery in.',
+                    'that\'s not how electric cars work.',
+                    'sophie is confused.',
+                    'and disappointed.',
+                    '"i thought you could help."'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -8,
+                dialogue: [
+                    'sophie went to the dealership.',
+                    'paid the eight thousand.',
+                    'some problems are too expensive.',
+                    'to wait for.'
+                ]
+            }
+        }
+    },
+
+    // 62. The hybrid headache
+    {
+        id: 'prius_inverter_01',
+        minReputation: 40,
+        maxReputation: 80,
+        requiresUpgrade: 'hasDiagnosticScanner',
+        car: {
+            make: 'Toyota',
+            model: 'Prius',
+            year: 2008,
+            condition: 'average'
+        },
+        customer: {
+            name: 'Greta',
+            personality: 'practical',
+            budget: 'medium',
+            patience: 4,
+            arrival: [
+                'a prius limps into the lot.',
+                'all the warning lights are on.',
+                'the driver is a young woman.',
+                '"it just died on the highway," she says.',
+                '"the red triangle came on."',
+                '"i need this car for work."',
+                'hybrids. always something.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'run diagnostic scan',
+                cost: 15,
+                time: 0,
+                requiresUpgrade: 'hasDiagnosticScanner',
+                reveals: [
+                    'multiple hybrid system codes.',
+                    'inverter failure.',
+                    'this is a known issue.',
+                    'inverter pump failed.',
+                    'caused overheating.',
+                    'the inverter is toast.'
+                ]
+            },
+            {
+                action: 'inspect the inverter',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'inverter coolant pump is seized.',
+                    'inverter itself is damaged.',
+                    'burnt smell.',
+                    'needs replacement.',
+                    'not cheap.',
+                    'but cheaper than a new car.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['inverter', 'hybrid_coolant_pump', 'coolant'],
+            acceptableRepairs: ['inverter', 'hybrid_coolant_pump'],
+            wrongRepairs: ['battery', 'alternator', 'fuel_pump']
+        },
+        outcomes: {
+            correct: {
+                payment: 1800,
+                reputationChange: 16,
+                dialogue: [
+                    'new inverter. new pump.',
+                    'fresh coolant.',
+                    'the prius wakes up.',
+                    'all lights off.',
+                    'greta is relieved.',
+                    '"i was worried it was the battery," she says.',
+                    '"those are even more expensive."',
+                    'small victories.'
+                ]
+            },
+            partial: {
+                payment: 1400,
+                reputationChange: 10,
+                dialogue: [
+                    'the car runs.',
+                    'inverter replaced.',
+                    'still a warning light.',
+                    'probably needs a hybrid battery soon.',
+                    'but that\'s a problem for later.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -15,
+                dialogue: [
+                    'you tried to fix it like a normal car.',
+                    'it\'s not a normal car.',
+                    'greta knows this now.',
+                    'so do you.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -6,
+                dialogue: [
+                    'greta couldn\'t wait.',
+                    'traded it in for a new one.',
+                    'probably the right call.'
+                ]
+            }
+        }
+    },
+
+    // 63. The van life
+    {
+        id: 'sprinter_van_01',
+        minReputation: 35,
+        maxReputation: 70,
+        requiresUpgrade: null,
+        car: {
+            make: 'Mercedes',
+            model: 'Sprinter',
+            year: 2012,
+            condition: 'rough'
+        },
+        customer: {
+            name: 'Luna',
+            personality: 'free_spirit',
+            budget: 'low',
+            patience: 5,
+            arrival: [
+                'a sprinter van covered in stickers.',
+                'the driver has dreadlocks and a dog.',
+                '"the van won\'t start when it\'s cold," she says.',
+                '"i live in this thing."',
+                '"it\'s getting cold."',
+                '"can you help?"',
+                'the dog looks at you hopefully.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'check the glow plugs',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'it\'s a diesel.',
+                    'glow plug light is slow.',
+                    'you check the plugs.',
+                    'two are dead.',
+                    'probably the relay too.',
+                    'cold starts are a nightmare.',
+                    'when these fail.'
+                ]
+            },
+            {
+                action: 'check the battery',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'battery is weak.',
+                    'she has a lot of electronics.',
+                    'solar panel on the roof.',
+                    'but the house battery is different.',
+                    'starter battery is dying.',
+                    'that\'s the immediate problem.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['battery', 'spark_plugs'], // glow plugs use spark_plugs as proxy
+            acceptableRepairs: ['battery'],
+            wrongRepairs: ['alternator', 'starter_motor', 'fuel_pump']
+        },
+        outcomes: {
+            correct: {
+                payment: 280,
+                reputationChange: 12,
+                dialogue: [
+                    'new battery. new glow plugs.',
+                    'the van starts instantly.',
+                    'even cold.',
+                    'luna hugs you.',
+                    'the dog licks your hand.',
+                    '"you\'re a lifesaver," she says.',
+                    '"i was worried i\'d freeze."',
+                    'she offers you kombucha.',
+                    'you decline.',
+                    'politely.'
+                ]
+            },
+            partial: {
+                payment: 180,
+                reputationChange: 6,
+                dialogue: [
+                    'new battery.',
+                    'starts better.',
+                    'still rough when cold.',
+                    'but luna is happy.',
+                    '"good enough," she says.',
+                    'van life.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -10,
+                dialogue: [
+                    'you fixed the wrong thing.',
+                    'the van still won\'t start.',
+                    'luna is disappointed.',
+                    'the dog looks sad.',
+                    'now you feel bad.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -5,
+                dialogue: [
+                    'luna couldn\'t wait.',
+                    'headed south.',
+                    'where it\'s warm.',
+                    'smart.'
+                ]
+            }
+        }
+    },
+
+    // 64. The classic restoration
+    {
+        id: 'mustang_classic_01',
+        minReputation: 60,
+        maxReputation: 100,
+        requiresUpgrade: 'hasEngineHoist',
+        car: {
+            make: 'Ford',
+            model: 'Mustang',
+            year: 1967,
+            condition: 'rough'
+        },
+        customer: {
+            name: 'Richard',
+            personality: 'nostalgic',
+            budget: 'high',
+            patience: 8,
+            arrival: [
+                'a 1967 mustang fastback arrives.',
+                'on a trailer.',
+                'the owner is older. well-dressed.',
+                '"my father bought this new," he says.',
+                '"it\'s been in a barn for thirty years."',
+                '"i want it running again."',
+                'his eyes are wet.',
+                'this matters to him.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'inspect the engine',
+                cost: 0,
+                time: 2,
+                requiresUpgrade: null,
+                reveals: [
+                    'a 289 v8. original.',
+                    'frozen solid.',
+                    'rusted cylinders.',
+                    'this engine needs a full rebuild.',
+                    'or replacement.',
+                    'richard wants original.',
+                    'of course he does.'
+                ]
+            },
+            {
+                action: 'inspect the fuel system',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'fuel tank is rusty.',
+                    'lines are clogged.',
+                    'carburetor is seized.',
+                    'thirty years of sitting.',
+                    'everything fuel-related is toast.'
+                ]
+            },
+            {
+                action: 'check the brakes',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'drum brakes all around.',
+                    'wheel cylinders are seized.',
+                    'brake lines are rusted.',
+                    'master cylinder is frozen.',
+                    'brakes need complete rebuild.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['engine_v8', 'fuel_pump', 'brake_master_cylinder', 'brake_lines', 'engine_oil', 'coolant'],
+            acceptableRepairs: ['engine_v8', 'fuel_pump', 'brake_master_cylinder'],
+            wrongRepairs: ['engine_4cyl_standard', 'abs_sensor', 'ecu_engine']
+        },
+        outcomes: {
+            correct: {
+                payment: 4800,
+                reputationChange: 30,
+                dialogue: [
+                    'weeks of work.',
+                    'the engine is rebuilt.',
+                    'new fuel system.',
+                    'new brakes.',
+                    'you turn the key.',
+                    'the v8 rumbles to life.',
+                    'that sound.',
+                    'richard just stands there.',
+                    'listening.',
+                    '"my father," he says.',
+                    '"i can hear him."',
+                    'this is why you do this.'
+                ]
+            },
+            partial: {
+                payment: 3200,
+                reputationChange: 18,
+                dialogue: [
+                    'the engine runs.',
+                    'brakes work.',
+                    'not perfect.',
+                    'but it moves under its own power.',
+                    'richard is happy.',
+                    '"it\'s a start," he says.',
+                    'he\'s right.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -25,
+                dialogue: [
+                    'you ordered modern parts.',
+                    'for a classic car.',
+                    'they don\'t fit.',
+                    'richard is understanding.',
+                    'but disappointed.',
+                    '"it\'s not a honda civic," he says.',
+                    'you know.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -15,
+                dialogue: [
+                    'richard ran out of patience.',
+                    'took the mustang to a specialist.',
+                    'some projects need experts.'
+                ]
+            }
+        }
+    },
+
+    // 65. The work truck
+    {
+        id: 'f250_powerstroke_01',
+        minReputation: 45,
+        maxReputation: 85,
+        requiresUpgrade: 'hasDiagnosticScanner',
+        car: {
+            make: 'Ford',
+            model: 'F-250',
+            year: 2006,
+            condition: 'rough'
+        },
+        customer: {
+            name: 'Buck',
+            personality: 'practical',
+            budget: 'medium',
+            patience: 4,
+            arrival: [
+                'a massive f-250 rolls in.',
+                'the driver is a contractor.',
+                'dusty boots. calloused hands.',
+                '"the turbo is making noise," he says.',
+                '"i need this truck for work."',
+                '"every day it\'s down, i lose money."',
+                'no pressure.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'listen to the turbo',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you hear it.',
+                    'a grinding whine.',
+                    'turbo bearing is failing.',
+                    'not blown yet.',
+                    'but close.',
+                    'this could let go any day.'
+                ]
+            },
+            {
+                action: 'run diagnostic scan',
+                cost: 15,
+                time: 0,
+                requiresUpgrade: 'hasDiagnosticScanner',
+                reveals: [
+                    'underboost code.',
+                    'turbo efficiency is down.',
+                    'vgt vanes are sticking.',
+                    'common on the 6.0l.',
+                    'turbo needs rebuild or replacement.'
+                ]
+            },
+            {
+                action: 'check the egr',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'egr cooler is weeping.',
+                    'not blown.',
+                    'but it\'s coming.',
+                    'these engines have issues.',
+                    'all of them.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['turbocharger', 'turbo_rebuild_kit', 'egr_valve'],
+            acceptableRepairs: ['turbocharger'],
+            wrongRepairs: ['engine_diesel_v6', 'supercharger', 'intercooler']
+        },
+        outcomes: {
+            correct: {
+                payment: 2500,
+                reputationChange: 18,
+                dialogue: [
+                    'rebuilt turbo.',
+                    'new egr valve.',
+                    'the 6.0 fires up.',
+                    'turbo spools clean.',
+                    'no more noise.',
+                    'buck nods.',
+                    '"good work," he says.',
+                    '"i\'ll be back."',
+                    '"these things always break."',
+                    'he\'s not wrong.'
+                ]
+            },
+            partial: {
+                payment: 1600,
+                reputationChange: 10,
+                dialogue: [
+                    'turbo replaced.',
+                    'egr still weeping.',
+                    'but the truck runs.',
+                    'buck is satisfied.',
+                    '"for now," he says.',
+                    'he knows the deal.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -16,
+                dialogue: [
+                    'you tried to put a gas turbo on a diesel.',
+                    'different animals.',
+                    'buck is not happy.',
+                    '"i told you it was a powerstroke."',
+                    'he did.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -8,
+                dialogue: [
+                    'buck couldn\'t wait.',
+                    'work doesn\'t stop.',
+                    'neither do diesel problems.'
+                ]
+            }
+        }
+    },
+
+    // 66. The overheating Ferrari
+    {
+        id: 'ferrari_overheat_01',
+        minReputation: 80,
+        maxReputation: 100,
+        requiresUpgrade: 'hasDiagnosticScanner',
+        car: {
+            make: 'Ferrari',
+            model: 'F430',
+            year: 2006,
+            condition: 'good'
+        },
+        customer: {
+            name: 'Alessandro',
+            personality: 'demanding',
+            budget: 'high',
+            patience: 3,
+            arrival: [
+                'a ferrari f430 arrives.',
+                'on a flatbed.',
+                'the driver is italian. expensive suit.',
+                '"it overheated," he says.',
+                '"on the autobahn."',
+                '"i was only doing two hundred."',
+                'only two hundred.',
+                'this should be interesting.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'inspect the cooling system',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'the radiators are full of debris.',
+                    'both side radiators.',
+                    'the car has three.',
+                    'front and both sides.',
+                    'all clogged.',
+                    'no airflow. overheating.'
+                ]
+            },
+            {
+                action: 'check for damage',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'no head gasket damage.',
+                    'lucky.',
+                    'the engine caught it in time.',
+                    'just needs cooling system service.',
+                    'and new coolant.',
+                    'expensive coolant.'
+                ]
+            },
+            {
+                action: 'run diagnostic scan',
+                cost: 25,
+                time: 0,
+                requiresUpgrade: 'hasDiagnosticScanner',
+                reveals: [
+                    'high temperature warning.',
+                    'no engine damage codes.',
+                    'got lucky.',
+                    'this could have been much worse.',
+                    'ferrari engines aren\'t cheap.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['radiator', 'coolant', 'coolant_hose', 'thermostat'],
+            acceptableRepairs: ['radiator', 'coolant'],
+            wrongRepairs: ['water_pump', 'head_gasket', 'engine_v8']
+        },
+        outcomes: {
+            correct: {
+                payment: 3900,
+                reputationChange: 32,
+                dialogue: [
+                    'cleaned the radiators.',
+                    'new coolant.',
+                    'new hoses.',
+                    'the ferrari starts.',
+                    'that v8 sound.',
+                    'temperature holds steady.',
+                    'alessandro nods.',
+                    '"you know your way around," he says.',
+                    '"i\'ll recommend you."',
+                    'to his rich friends.',
+                    'this is good.'
+                ]
+            },
+            partial: {
+                payment: 2800,
+                reputationChange: 18,
+                dialogue: [
+                    'cooling system serviced.',
+                    'runs cooler.',
+                    'still runs a bit warm.',
+                    'might need more work.',
+                    'but alessandro is satisfied.',
+                    'for now.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -28,
+                dialogue: [
+                    'you tried to put generic parts on a ferrari.',
+                    'that\'s not how ferraris work.',
+                    'alessandro is furious.',
+                    '"this is a ferrari," he says.',
+                    '"not a ford focus."',
+                    'point taken.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -12,
+                dialogue: [
+                    'alessandro had the car transported.',
+                    'to a ferrari specialist.',
+                    'probably the right call.'
+                ]
+            }
+        }
+    },
+
+    // ═══════════════════════════════════════════
+    // MORE VARIETY SCENARIOS
+    // ═══════════════════════════════════════════
+
+    // 67. The mysterious noise
+    {
+        id: 'audi_mystery_noise_01',
+        minReputation: 30,
+        maxReputation: 65,
+        requiresUpgrade: null,
+        car: {
+            make: 'Audi',
+            model: 'A4',
+            year: 2013,
+            condition: 'good'
+        },
+        customer: {
+            name: 'Monika',
+            personality: 'anxious',
+            budget: 'medium',
+            patience: 3,
+            arrival: [
+                'an audi a4 pulls in.',
+                'the driver looks worried.',
+                '"there\'s a noise," she says.',
+                '"only sometimes. when i turn left."',
+                '"sometimes when i brake."',
+                '"sometimes just randomly."',
+                '"i\'m afraid to drive it."',
+                'intermittent problems. the worst kind.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'take it for a test drive',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'you drive around the block.',
+                    'nothing.',
+                    'you turn left.',
+                    'nothing.',
+                    'you brake.',
+                    'a faint clunk.',
+                    'there it is.',
+                    'suspension related. probably.'
+                ]
+            },
+            {
+                action: 'inspect the suspension',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'you put it on the lift.',
+                    'check the control arms.',
+                    'sway bar links are loose.',
+                    'left side has play.',
+                    'that\'s your noise.',
+                    'should be a simple fix.'
+                ]
+            },
+            {
+                action: 'run diagnostic scan',
+                cost: 15,
+                time: 0,
+                requiresUpgrade: 'hasDiagnosticScanner',
+                reveals: [
+                    'no fault codes.',
+                    'ABS sensors all reading normal.',
+                    'definitely mechanical.',
+                    'not electrical.',
+                    'saves time.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['sway_bar_link', 'control_arm'],
+            acceptableRepairs: ['sway_bar_link'],
+            wrongRepairs: ['brake_pads_front', 'wheel_bearing', 'shock_absorber']
+        },
+        outcomes: {
+            correct: {
+                payment: 280,
+                reputationChange: 10,
+                dialogue: [
+                    'new sway bar links.',
+                    'new control arm.',
+                    'test drive.',
+                    'silence.',
+                    'beautiful silence.',
+                    'monika is relieved.',
+                    '"thank you," she says.',
+                    '"i can drive without anxiety now."',
+                    'you know that feeling.',
+                    'it doesn\'t last.'
+                ]
+            },
+            partial: {
+                payment: 150,
+                reputationChange: 4,
+                dialogue: [
+                    'new sway bar links.',
+                    'noise is quieter.',
+                    'but not gone.',
+                    'monika notices.',
+                    '"it\'s better," she says.',
+                    'but not fixed.',
+                    'she\'ll be back.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -12,
+                dialogue: [
+                    'you fixed the wrong thing.',
+                    'the noise is still there.',
+                    'monika is disappointed.',
+                    '"i thought you could find it."',
+                    'so did you.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -5,
+                dialogue: [
+                    'monika couldn\'t wait.',
+                    'took it to the dealership.',
+                    'they probably charged double.',
+                    'but at least it\'s fixed.',
+                    'probably.'
+                ]
+            }
+        }
+    },
+
+    // 68. The rally car
+    {
+        id: 'subaru_rally_01',
+        minReputation: 55,
+        maxReputation: 100,
+        requiresUpgrade: null,
+        car: {
+            make: 'Subaru',
+            model: 'Impreza WRX',
+            year: 2005,
+            condition: 'rough'
+        },
+        customer: {
+            name: 'Marcus',
+            personality: 'enthusiast',
+            budget: 'medium',
+            patience: 4,
+            arrival: [
+                'a subaru wrx rolls in.',
+                'mud flaps. rally tires. dirt everywhere.',
+                'the driver is young. excited.',
+                '"i was at a rallycross," he says.',
+                '"hit a jump too hard."',
+                '"now it makes a weird noise."',
+                '"from the transmission."',
+                'rally cars. always something.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'inspect under the car',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'mud. so much mud.',
+                    'you knock off the big chunks.',
+                    'transmission looks intact.',
+                    'but the skid plate is bent.',
+                    'hitting things at speed.',
+                    'what could go wrong.'
+                ]
+            },
+            {
+                action: 'check the transmission',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'transmission fluid is leaking.',
+                    'from the drain plug.',
+                    'plug is bent.',
+                    'probably hit a rock.',
+                    'lucky it didn\'t crack the case.',
+                    'needs new plug. new fluid.'
+                ]
+            },
+            {
+                action: 'test drive',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'you drive it around.',
+                    'transmission shifts fine.',
+                    'the noise is the bent skid plate.',
+                    'rubbing on the exhaust.',
+                    'not as bad as it sounded.',
+                    'rally drivers worry too much.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['transmission_fluid', 'exhaust_hanger'],
+            acceptableRepairs: ['transmission_fluid'],
+            wrongRepairs: ['clutch_kit', 'transmission_mount', 'cv_axle']
+        },
+        outcomes: {
+            correct: {
+                payment: 180,
+                reputationChange: 12,
+                dialogue: [
+                    'new transmission plug.',
+                    'fresh fluid.',
+                    'straightened the skid plate.',
+                    'car is ready to rally.',
+                    'marcus is grinning.',
+                    '"you get it," he says.',
+                    '"most shops just shake their heads."',
+                    'you\'ve seen worse.',
+                    'much worse.'
+                ]
+            },
+            partial: {
+                payment: 120,
+                reputationChange: 6,
+                dialogue: [
+                    'fixed the leak.',
+                    'skid plate still rubs a bit.',
+                    'but it\'s safe.',
+                    'marcus doesn\'t care.',
+                    '"she\'s a rally car," he says.',
+                    '"she\'s supposed to be beat up."',
+                    'fair point.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -15,
+                dialogue: [
+                    'you tried to sell him a clutch.',
+                    'the clutch is fine.',
+                    'marcus knows his car.',
+                    '"it\'s the transmission, not the clutch."',
+                    'he\'s right.',
+                    'embarrassing.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -6,
+                dialogue: [
+                    'marcus had a rally this weekend.',
+                    'couldn\'t wait.',
+                    'probably fixed it himself.',
+                    'rally drivers are like that.'
+                ]
+            }
+        }
+    },
+
+    // 69. The flooded car
+    {
+        id: 'civic_flood_01',
+        minReputation: 25,
+        maxReputation: 60,
+        requiresUpgrade: null,
+        car: {
+            make: 'Honda',
+            model: 'Civic',
+            year: 2010,
+            condition: 'rough'
+        },
+        customer: {
+            name: 'Petra',
+            personality: 'worried',
+            budget: 'low',
+            patience: 3,
+            arrival: [
+                'a civic is towed in.',
+                'the driver looks like she cried.',
+                '"i drove through a flood," she says.',
+                '"the engine just died."',
+                '"water came in everywhere."',
+                '"is it totaled?"',
+                'flood cars. bad news.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'check the air filter',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you open the air box.',
+                    'filter is soaked.',
+                    'water in the intake.',
+                    'this is bad.',
+                    'water in the cylinders.',
+                    'hydrolock.'
+                ]
+            },
+            {
+                action: 'try to turn the engine',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you try to turn it by hand.',
+                    'it won\'t move.',
+                    'bent connecting rod.',
+                    'engine is done.',
+                    'this car needs a new engine.',
+                    'or the scrap yard.'
+                ]
+            },
+            {
+                action: 'check the interior',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'mud line on the seats.',
+                    'water came up to the dashboard.',
+                    'ECU was underwater.',
+                    'electrical is toast.',
+                    'this car is a total loss.',
+                    'you have to tell her.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: [], // No repair - car is totaled
+            acceptableRepairs: ['engine_4cyl_standard'],
+            wrongRepairs: ['air_filter', 'spark_plugs', 'battery']
+        },
+        outcomes: {
+            correct: {
+                payment: 50,
+                reputationChange: 8,
+                dialogue: [
+                    '"i\'m sorry," you say.',
+                    '"the engine is gone."',
+                    '"the electrical system is gone."',
+                    '"it\'s not worth fixing."',
+                    'she starts crying again.',
+                    'you feel terrible.',
+                    'but she needed to know.',
+                    'you buy the car for parts.',
+                    'fifty euros.',
+                    'small comfort.'
+                ]
+            },
+            partial: {
+                payment: 0,
+                reputationChange: 0,
+                dialogue: [
+                    'you could put in a new engine.',
+                    'but it doesn\'t make sense.',
+                    'you tell her honestly.',
+                    'she appreciates that.',
+                    'takes the insurance money.',
+                    'moves on.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -20,
+                dialogue: [
+                    'you tried to fix it.',
+                    'new air filter. new plugs.',
+                    'it still doesn\'t run.',
+                    'she paid for nothing.',
+                    'you refund her.',
+                    'feel like a fraud.',
+                    'some cars can\'t be saved.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -3,
+                dialogue: [
+                    'insurance totaled it anyway.',
+                    'she gets a payout.',
+                    'moves on.',
+                    'some endings are quick.'
+                ]
+            }
+        }
+    },
+
+    // 70. The taxi driver
+    {
+        id: 'octavia_taxi_01',
+        minReputation: 20,
+        maxReputation: 55,
+        requiresUpgrade: null,
+        car: {
+            make: 'Skoda',
+            model: 'Octavia',
+            year: 2016,
+            condition: 'average'
+        },
+        customer: {
+            name: 'Ibrahim',
+            personality: 'practical',
+            budget: 'medium',
+            patience: 2,
+            arrival: [
+                'a skoda octavia taxi pulls in.',
+                'the meter is still running.',
+                '"quick question," the driver says.',
+                '"the turbo is whistling."',
+                '"i have 200,000 km on it."',
+                '"how long do i have?"',
+                'taxi drivers. miles matter.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'listen to the turbo',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you listen.',
+                    'high pitched whistle.',
+                    'getting louder under load.',
+                    'turbo is on its way out.',
+                    'could last a week.',
+                    'could go tomorrow.',
+                    'gambling, really.'
+                ]
+            },
+            {
+                action: 'check for play in the turbine',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'you pull the intake.',
+                    'wiggle the compressor wheel.',
+                    'play. not terrible.',
+                    'but it\'s there.',
+                    'bearing wear.',
+                    'needs replacement soon.'
+                ]
+            },
+            {
+                action: 'check the oil',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'oil is black.',
+                    'should have been changed 5000 km ago.',
+                    'turbos need clean oil.',
+                    'this one hasn\'t been getting it.',
+                    'that\'s why it\'s dying.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['turbocharger', 'engine_oil', 'oil_filter'],
+            acceptableRepairs: ['turbocharger'],
+            wrongRepairs: ['intercooler', 'blowoff_valve', 'wastegate']
+        },
+        outcomes: {
+            correct: {
+                payment: 650,
+                reputationChange: 14,
+                dialogue: [
+                    'new turbo.',
+                    'fresh oil.',
+                    'ibrahim is back on the road.',
+                    '"i can\'t afford downtime," he says.',
+                    '"this is my livelihood."',
+                    'you know.',
+                    'you\'ve seen the taxi queue.',
+                    'they wait for no one.'
+                ]
+            },
+            partial: {
+                payment: 500,
+                reputationChange: 8,
+                dialogue: [
+                    'turbo replaced.',
+                    'he\'ll change the oil himself.',
+                    'ibrahim knows how.',
+                    'taxi drivers learn.',
+                    'or they go broke.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -10,
+                dialogue: [
+                    'you tried to sell him upgrades.',
+                    'he doesn\'t want upgrades.',
+                    'he needs his car to work.',
+                    '"i\'m not a racer," he says.',
+                    '"i\'m a taxi driver."',
+                    'point taken.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -4,
+                dialogue: [
+                    'ibrahim went somewhere else.',
+                    'time is money.',
+                    'especially for taxi drivers.'
+                ]
+            }
+        }
+    },
+
+    // 71. The family road trip
+    {
+        id: 'passat_roadtrip_01',
+        minReputation: 15,
+        maxReputation: 50,
+        requiresUpgrade: null,
+        car: {
+            make: 'Volkswagen',
+            model: 'Passat',
+            year: 2014,
+            condition: 'good'
+        },
+        customer: {
+            name: 'Family Müller',
+            personality: 'stressed',
+            budget: 'medium',
+            patience: 1,
+            arrival: [
+                'a passat wagon pulls in.',
+                'two adults. three kids. luggage.',
+                '"we\'re driving to italy tomorrow," the dad says.',
+                '"the ac stopped working."',
+                '"in july."',
+                '"with three kids."',
+                '"please help."',
+                'the kids are already fighting.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'check the ac system',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: 'hasACMachine',
+                reveals: [
+                    'you hook up the gauges.',
+                    'no pressure.',
+                    'refrigerant leaked out.',
+                    'need to find the leak.',
+                    'and fix it.',
+                    'today.'
+                ]
+            },
+            {
+                action: 'visual inspection',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you look around.',
+                    'ac condenser is oily.',
+                    'front and center.',
+                    'rock damage probably.',
+                    'common failure point.',
+                    'needs replacement.'
+                ]
+            },
+            {
+                action: 'check the compressor',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'compressor clutch engages.',
+                    'compressor itself is fine.',
+                    'just no refrigerant.',
+                    'new condenser should fix it.',
+                    'if you have one.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['ac_condenser', 'ac_recharge'],
+            acceptableRepairs: ['ac_recharge'],
+            wrongRepairs: ['ac_compressor', 'blower_motor', 'heater_core']
+        },
+        outcomes: {
+            correct: {
+                payment: 380,
+                reputationChange: 12,
+                dialogue: [
+                    'new condenser.',
+                    'full recharge.',
+                    'cold air.',
+                    'the family cheers.',
+                    'the kids stop fighting.',
+                    'for now.',
+                    'herr müller shakes your hand.',
+                    '"you saved our vacation," he says.',
+                    'you hope italy is worth it.',
+                    'three kids in a car.',
+                    'for eight hours.',
+                    'god help them.'
+                ]
+            },
+            partial: {
+                payment: 80,
+                reputationChange: 4,
+                dialogue: [
+                    'you recharge the system.',
+                    'it\'s leaking slowly.',
+                    'should last the trip.',
+                    'probably.',
+                    'herr müller is nervous.',
+                    'but they leave.',
+                    'fingers crossed.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -15,
+                dialogue: [
+                    'you replaced the compressor.',
+                    'that wasn\'t the problem.',
+                    'still no ac.',
+                    'the kids are crying.',
+                    'frau müller is angry.',
+                    'herr müller is defeated.',
+                    'you fix it properly.',
+                    'no charge.',
+                    'lesson learned.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: -8,
+                dialogue: [
+                    'they went to a dealership.',
+                    'paid double.',
+                    'but made it to italy.',
+                    'small victories.'
+                ]
+            }
+        }
+    },
+
+    // 72. The learner driver
+    {
+        id: 'fiat_learner_01',
+        minReputation: 5,
+        maxReputation: 35,
+        requiresUpgrade: null,
+        car: {
+            make: 'Fiat',
+            model: '500',
+            year: 2012,
+            condition: 'average'
+        },
+        customer: {
+            name: 'Lisa',
+            personality: 'nervous',
+            budget: 'low',
+            patience: 3,
+            arrival: [
+                'a fiat 500 rolls in slowly.',
+                'the driver is young. very young.',
+                'learners permit on the dashboard.',
+                '"i think i broke something," she says.',
+                '"i was practicing parking."',
+                '"and there was a noise."',
+                'her dad is in the passenger seat.',
+                'he looks exhausted.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'check for damage',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you walk around the car.',
+                    'rear bumper is scuffed.',
+                    'but nothing major.',
+                    'she hit a pole probably.',
+                    'at 2 km/h.',
+                    'learner drivers.'
+                ]
+            },
+            {
+                action: 'listen to the engine',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you have her start it.',
+                    'it runs fine.',
+                    'no noise.',
+                    'you rev it.',
+                    'still nothing.',
+                    'what noise?'
+                ]
+            },
+            {
+                action: 'ask about the noise',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    '"what did it sound like?"',
+                    '"like... clunk?"',
+                    'the dad sighs.',
+                    '"she stalled it. that was the noise."',
+                    'oh.',
+                    'there\'s nothing wrong with the car.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: [], // Nothing wrong
+            acceptableRepairs: [],
+            wrongRepairs: ['engine_oil', 'spark_plugs', 'battery']
+        },
+        outcomes: {
+            correct: {
+                payment: 20,
+                reputationChange: 6,
+                dialogue: [
+                    '"the car is fine," you say.',
+                    'lisa is relieved.',
+                    'the dad is skeptical.',
+                    '"are you sure?"',
+                    '"the noise was the engine stalling."',
+                    '"that\'s normal for a learner."',
+                    'he laughs.',
+                    'tired laugh.',
+                    'you don\'t charge them.',
+                    'they tip you anyway.',
+                    'twenty euros.',
+                    'for peace of mind.'
+                ]
+            },
+            partial: {
+                payment: 0,
+                reputationChange: 3,
+                dialogue: [
+                    'you tell them it\'s fine.',
+                    'they\'re not convinced.',
+                    'but they leave.',
+                    'the car is fine.',
+                    'really.'
+                ]
+            },
+            wrong: {
+                payment: 0,
+                reputationChange: -12,
+                dialogue: [
+                    'you sold them an oil change.',
+                    'the car didn\'t need it.',
+                    'there was nothing wrong.',
+                    'they know.',
+                    'they won\'t be back.',
+                    'honesty matters.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: 0,
+                dialogue: [
+                    'they didn\'t wait.',
+                    'probably went home.',
+                    'to practice parking.',
+                    'some more.'
+                ]
+            }
+        }
+    },
+
+    // 73. The mechanic's own car
+    {
+        id: 'mechanic_own_car_01',
+        minReputation: 40,
+        maxReputation: 100,
+        requiresUpgrade: null,
+        car: {
+            make: 'BMW',
+            model: 'E30',
+            year: 1989,
+            condition: 'good'
+        },
+        customer: {
+            name: 'Yourself',
+            personality: 'yourself',
+            budget: 'yourself',
+            patience: 10,
+            arrival: [
+                'it\'s your day off.',
+                'your e30 is in the garage.',
+                'it\'s been making a noise.',
+                'you\'ve been ignoring it.',
+                'but you can\'t anymore.',
+                'time to fix your own car.',
+                'for once.'
+            ]
+        },
+        diagnostics: [
+            {
+                action: 'listen to the noise',
+                cost: 0,
+                time: 0,
+                requiresUpgrade: null,
+                reveals: [
+                    'you start it up.',
+                    'valve train noise.',
+                    'ticking.',
+                    'adjustment needed.',
+                    'or something worse.',
+                    'you\'ve been putting this off.'
+                ]
+            },
+            {
+                action: 'check the valves',
+                cost: 0,
+                time: 2,
+                requiresUpgrade: null,
+                reveals: [
+                    'you pull the valve cover.',
+                    'check the clearances.',
+                    'two are out of spec.',
+                    'not terrible.',
+                    'adjustment should fix it.',
+                    'if you have the shims.'
+                ]
+            },
+            {
+                action: 'inspect the timing belt',
+                cost: 0,
+                time: 1,
+                requiresUpgrade: null,
+                reveals: [
+                    'while you\'re in there.',
+                    'timing belt looks old.',
+                    'probably should replace it.',
+                    'it\'s been 40,000 km.',
+                    'you know better.',
+                    'preventive maintenance.'
+                ]
+            }
+        ],
+        solution: {
+            correctRepairs: ['timing_belt_kit', 'valve_cover_gasket', 'engine_oil', 'oil_filter'],
+            acceptableRepairs: ['timing_belt', 'valve_cover_gasket'],
+            wrongRepairs: ['engine_v6', 'turbocharger', 'performance_exhaust']
+        },
+        outcomes: {
+            correct: {
+                payment: -150, // Cost of parts only
+                reputationChange: 5,
+                dialogue: [
+                    'you fix your own car.',
+                    'properly.',
+                    'new timing belt.',
+                    'valve adjustment.',
+                    'fresh oil.',
+                    'it runs beautifully.',
+                    'you should do this more often.',
+                    'but you never do.',
+                    'the cobbler\'s children.',
+                    'have no shoes.'
+                ]
+            },
+            partial: {
+                payment: -80,
+                reputationChange: 2,
+                dialogue: [
+                    'you do the minimum.',
+                    'car runs better.',
+                    'not perfect.',
+                    'but good enough.',
+                    'for now.',
+                    'there\'s always later.',
+                    'there\'s never later.'
+                ]
+            },
+            wrong: {
+                payment: -200,
+                reputationChange: -5,
+                dialogue: [
+                    'you bought parts you didn\'t need.',
+                    'your car is still ticking.',
+                    'you know better.',
+                    'but you\'re tired.',
+                    'even mechanics make mistakes.',
+                    'on their own cars.'
+                ]
+            },
+            timeout: {
+                payment: 0,
+                reputationChange: 0,
+                dialogue: [
+                    'you didn\'t fix it.',
+                    'again.',
+                    'the noise continues.',
+                    'you turn up the radio.',
+                    'that fixes it too.'
                 ]
             }
         }

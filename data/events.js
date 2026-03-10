@@ -1126,5 +1126,727 @@ const EVENTS = [
                 ]
             }
         ]
+    },
+
+    // ═══════════════════════════════════════════
+    // EXPANDED EVENTS - More things that can go wrong
+    // ═══════════════════════════════════════════
+
+    {
+        id: 'power_outage',
+        triggerAfterDay: 15,
+        triggerOnce: false,
+        text: [
+            'the power goes out.',
+            'mid-job.',
+            'you\'re under a car.',
+            'the lift stops halfway.',
+            'you have to pump it down manually.',
+            'this is going to slow things down.'
+        ],
+        choices: [
+            {
+                text: 'wait it out',
+                effect: { timeLoss: true },
+                followup: [
+                    'you sit in the dark.',
+                    'two hours.',
+                    'the lights flicker back on.',
+                    'behind schedule.',
+                    'but at least you can see.'
+                ]
+            },
+            {
+                text: 'work by flashlight',
+                effect: { reputationRisk: true },
+                followup: [
+                    'you keep working.',
+                    'flashlight in your teeth.',
+                    'not ideal.',
+                    'but you get it done.',
+                    'mostly.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'tool_breaks_critical',
+        triggerAfterDay: 25,
+        triggerOnce: false,
+        text: [
+            'your torque wrench snaps.',
+            'mid-tightening.',
+            'on a customer\'s cylinder head.',
+            'you don\'t know if it\'s at spec.',
+            'this is bad.'
+        ],
+        choices: [
+            {
+                text: 'buy a new one and redo the job (€120)',
+                effect: { money: -120 },
+                followup: [
+                    'you order a new torque wrench.',
+                    'undo the bolts.',
+                    'start over.',
+                    'expensive mistake.',
+                    'but the right thing to do.'
+                ]
+            },
+            {
+                text: 'hope it was close enough',
+                effect: { reputationRisk: true },
+                followup: [
+                    'you leave it.',
+                    'it was probably fine.',
+                    'probably.',
+                    'you\'ll find out.',
+                    'eventually.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'customer_car_damaged',
+        triggerAfterDay: 35,
+        triggerReputation: 40,
+        triggerOnce: true,
+        text: [
+            'you\'re backing a customer\'s car out.',
+            'a tool cart rolls into the door.',
+            'a dent. a scratch.',
+            'they\'re going to notice.'
+        ],
+        choices: [
+            {
+                text: 'fix it yourself (€150)',
+                effect: { money: -150 },
+                followup: [
+                    'you call your paint guy.',
+                    'he fixes it same day.',
+                    'customer never knows.',
+                    'expensive lesson.',
+                    'watch where you put things.'
+                ]
+            },
+            {
+                text: 'tell the customer',
+                effect: { reputation: -8 },
+                followup: [
+                    'you call them.',
+                    '"i have to tell you something."',
+                    'they\'re upset.',
+                    'but they appreciate the honesty.',
+                    'you fix it at cost.',
+                    'your reputation takes a hit.',
+                    'your conscience is clear.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'parts_delivery_wrong',
+        triggerAfterDay: 10,
+        triggerOnce: false,
+        text: [
+            'the parts delivery arrives.',
+            'you ordered brake pads.',
+            'they sent a water pump.',
+            'completely wrong.',
+            'the customer is waiting.'
+        ],
+        choices: [
+            {
+                text: 'rush order correct parts (€40 extra)',
+                effect: { money: -40 },
+                followup: [
+                    'you call the supplier.',
+                    'they mess up.',
+                    'you pay for rush shipping.',
+                    'customer waits another day.',
+                    'the supplier hears about this.'
+                ]
+            },
+            {
+                text: 'send customer to another shop',
+                effect: { reputation: -5 },
+                followup: [
+                    '"i can\'t help you today."',
+                    'they\'re not happy.',
+                    'but you can\'t fix it without parts.',
+                    'sometimes you lose.',
+                    'through no fault of your own.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'lift_failure',
+        triggerAfterDay: 50,
+        triggerOnce: true,
+        text: [
+            'the lift makes a horrible noise.',
+            'then stops.',
+            'a car is stuck fifteen feet in the air.',
+            'hydraulic line burst.',
+            'this is going to be expensive.'
+        ],
+        choices: [
+            {
+                text: 'repair the lift (€400)',
+                effect: { money: -400 },
+                followup: [
+                    'you get the car down safely.',
+                    'call the lift technician.',
+                    'new hydraulic line.',
+                    'new seals.',
+                    'the lift works better than ever.',
+                    'small mercies.'
+                ]
+            },
+            {
+                text: 'jury-rig a fix',
+                effect: { reputationRisk: true },
+                followup: [
+                    'you patch the line.',
+                    'it holds.',
+                    'for now.',
+                    'you add "new lift" to the list.',
+                    'the list is getting long.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'employee_mistake',
+        triggerReputation: 55,
+        triggerOnce: true,
+        text: [
+            'the kid you hired made a mistake.',
+            'wrong oil in a customer\'s car.',
+            'synthetic instead of conventional.',
+            'the customer is complaining.',
+            'it\'s not actually harmful.',
+            'but they\'re upset.'
+        ],
+        choices: [
+            {
+                text: 'refund and apologize (€80)',
+                effect: { money: -80 },
+                followup: [
+                    'you refund the service.',
+                    'change the oil again.',
+                    'the customer is satisfied.',
+                    'you have a talk with the kid.',
+                    'he\'s learning.',
+                    'mistakes cost money.'
+                ]
+            },
+            {
+                text: 'explain it\'s actually better oil',
+                effect: { reputation: -3 },
+                followup: [
+                    '"synthetic is better."',
+                    'they don\'t care.',
+                    'they wanted what they paid for.',
+                    'you\'re technically right.',
+                    'but the customer is always right.',
+                    'even when they\'re wrong.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'insurance_audit',
+        triggerAfterDay: 60,
+        triggerOnce: true,
+        text: [
+            'an insurance adjuster shows up.',
+            '"we\'re auditing your claims."',
+            '"need to see your records."',
+            'you have records.',
+            'somewhere.'
+        ],
+        choices: [
+            {
+                text: 'hire an accountant (€200)',
+                effect: { money: -200 },
+                followup: [
+                    'you get your books in order.',
+                    'everything checks out.',
+                    'the adjuster leaves satisfied.',
+                    'you start keeping better records.',
+                    'lesson learned.'
+                ]
+            },
+            {
+                text: 'handle it yourself',
+                effect: null,
+                followup: [
+                    'you dig through receipts.',
+                    'find most of them.',
+                    'the adjuster is patient.',
+                    'you pass.',
+                    'barely.',
+                    'you start keeping better records.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'competitor_sabotage',
+        triggerReputation: 50,
+        triggerOnce: true,
+        text: [
+            'you find nails behind your garage.',
+            'dozens of them.',
+            'scattered where customers drive.',
+            'this wasn\'t accidental.',
+            'someone is trying to hurt you.'
+        ],
+        choices: [
+            {
+                text: 'install security cameras (€250)',
+                effect: { money: -250 },
+                followup: [
+                    'you clean up the nails.',
+                    'install cameras.',
+                    'you catch someone on tape.',
+                    'the rival garage\'s nephew.',
+                    'the police handle it.',
+                    'the rivalry escalates.'
+                ]
+            },
+            {
+                text: 'keep a lookout yourself',
+                effect: null,
+                followup: [
+                    'you clean up.',
+                    'watch the lot.',
+                    'nothing happens.',
+                    'for weeks.',
+                    'then you find more nails.',
+                    'this isn\'t over.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'customer_allergy',
+        triggerAfterDay: 20,
+        triggerOnce: false,
+        text: [
+            'a customer drops off their car.',
+            'they mention they\'re allergic to dogs.',
+            'you have a shop dog.',
+            'a golden retriever. sheds everywhere.',
+            'this could be a problem.'
+        ],
+        choices: [
+            {
+                text: 'deep clean the interior (€30)',
+                effect: { money: -30 },
+                followup: [
+                    'you vacuum everything.',
+                    'use allergen spray.',
+                    'the customer is impressed.',
+                    '"you really thought of everything."',
+                    'the dog looks hurt.',
+                    'you give him extra treats.'
+                ]
+            },
+            {
+                text: 'keep the dog outside that day',
+                effect: null,
+                followup: [
+                    'the dog mopes.',
+                    'you vacuum quickly.',
+                    'probably fine.',
+                    'the customer doesn\'t mention it.',
+                    'probably fine.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'viral_video',
+        triggerReputation: 65,
+        triggerOnce: true,
+        text: [
+            'a customer films you working.',
+            'they post it online.',
+            'it\'s getting views.',
+            '"satisfying engine repair" or something.',
+            'suddenly, people recognize you.'
+        ],
+        choices: [
+            {
+                text: 'embrace the attention',
+                effect: { reputation: 15 },
+                followup: [
+                    'you start posting more.',
+                    'people love it.',
+                    'business picks up.',
+                    'young people come in.',
+                    '"i saw you on the internet."',
+                    'you\'re a small celebrity.',
+                    'in a very small pond.'
+                ]
+            },
+            {
+                text: 'ask them to take it down',
+                effect: null,
+                followup: [
+                    'you prefer privacy.',
+                    'they understand.',
+                    'the video stays up.',
+                    'but you don\'t encourage more.',
+                    'fifteen minutes of fame.',
+                    'you\'ll take five.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'recall_notice',
+        triggerAfterDay: 30,
+        triggerOnce: false,
+        text: [
+            'a manufacturer issues a recall.',
+            'for a part you replaced last week.',
+            'the customer calls, panicked.',
+            '"you put a defective part in my car!"',
+            'technically true.',
+            'but you didn\'t know.'
+        ],
+        choices: [
+            {
+                text: 'fix it for free (€0, goodwill)',
+                effect: { reputation: 10 },
+                followup: [
+                    'you replace the part.',
+                    'at your cost.',
+                    'the manufacturer reimburses you.',
+                    'eventually.',
+                    'the customer tells everyone.',
+                    '"he stands behind his work."',
+                    'even when it wasn\'t your fault.'
+                ]
+            },
+            {
+                text: 'explain it\'s a manufacturer issue',
+                effect: { reputation: -2 },
+                followup: [
+                    '"take it to the dealership."',
+                    '"they\'ll fix it for free."',
+                    'they\'re not happy.',
+                    'but you\'re right.',
+                    'being right isn\'t always enough.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'parts_counterfeit',
+        triggerAfterDay: 45,
+        triggerOnce: true,
+        text: [
+            'you notice something off.',
+            'the parts you received.',
+            'the packaging looks wrong.',
+            'the logo is slightly different.',
+            'these are counterfeit.'
+        ],
+        choices: [
+            {
+                text: 'report and return (€0)',
+                effect: { reputation: 5 },
+                followup: [
+                    'you call the supplier.',
+                    'they\'re shocked.',
+                    'or acting shocked.',
+                    'you find a new supplier.',
+                    'better to be safe.',
+                    'counterfeit parts kill engines.',
+                    'and reputations.'
+                ]
+            },
+            {
+                text: 'use them anyway',
+                effect: { reputationRisk: true },
+                followup: [
+                    'they\'re probably fine.',
+                    'probably.',
+                    'you install them.',
+                    'they work.',
+                    'for now.',
+                    'you make a note.',
+                    'watch those cars.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'customer_faints',
+        triggerAfterDay: 25,
+        triggerOnce: false,
+        text: [
+            'a customer is looking at their bill.',
+            'they go pale.',
+            'they sway.',
+            'they collapse.',
+            'right in your office.'
+        ],
+        choices: [
+            {
+                text: 'call an ambulance',
+                effect: { money: -50 },
+                followup: [
+                    'the paramedics come.',
+                    'it was low blood sugar.',
+                    'they\'re fine.',
+                    'you give them juice.',
+                    'they\'re embarrassed.',
+                    'you\'re relieved.',
+                    'first aid training was worth it.'
+                ]
+            },
+            {
+                text: 'help them yourself',
+                effect: null,
+                followup: [
+                    'you recognize the signs.',
+                    'sugar. now.',
+                    'they come around.',
+                    '"diabetic," they say.',
+                    '"forgot to eat."',
+                    'you keep juice in the office now.',
+                    'just in case.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'fire_drill',
+        triggerAfterDay: 40,
+        triggerOnce: true,
+        text: [
+            'you smell smoke.',
+            'the welder was left on.',
+            'a rag caught fire.',
+            'small flame.',
+            'getting bigger.'
+        ],
+        choices: [
+            {
+                text: 'use the fire extinguisher',
+                effect: { money: -30 },
+                followup: [
+                    'you grab the extinguisher.',
+                    'pull the pin.',
+                    'spray.',
+                    'the fire dies.',
+                    'powder everywhere.',
+                    'you replace the extinguisher.',
+                    'and the rags.',
+                    'and your composure.'
+                ]
+            },
+            {
+                text: 'throw it outside',
+                effect: { reputationRisk: true },
+                followup: [
+                    'you grab the burning rag.',
+                    'throw it out the door.',
+                    'it burns on the concrete.',
+                    'no damage.',
+                    'lucky.',
+                    'you buy more extinguishers.',
+                    'several.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'inheritance_offer',
+        triggerAfterDay: 100,
+        triggerReputation: 70,
+        triggerOnce: true,
+        text: [
+            'a lawyer calls.',
+            'a distant relative passed away.',
+            'they left you something.',
+            'a collection of vintage tools.',
+            'and €2000.',
+            'you didn\'t know they existed.'
+        ],
+        choices: [
+            {
+                text: 'accept the inheritance',
+                effect: { money: 2000 },
+                followup: [
+                    'the tools are beautiful.',
+                    '1950s snap-on.',
+                    'chrome. perfect condition.',
+                    'you use them every day.',
+                    'and think about family.',
+                    'the ones you know.',
+                    'and the ones you didn\'t.'
+                ]
+            },
+            {
+                text: 'donate it to charity',
+                effect: { reputation: 10 },
+                followup: [
+                    'you give it all away.',
+                    'the tools go to a trade school.',
+                    'the money to a children\'s hospital.',
+                    'you feel good.',
+                    'and wonder who they were.',
+                    'and why they thought of you.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'racing_team_offer',
+        triggerReputation: 85,
+        triggerOnce: true,
+        text: [
+            'a racing team approaches you.',
+            'amateur. but serious.',
+            '"we need a crew chief."',
+            '"weekends only."',
+            '"we can\'t pay much."',
+            '"but you\'ll see racing."'
+        ],
+        choices: [
+            {
+                text: 'join the team',
+                effect: { reputation: 10, money: -100 },
+                followup: [
+                    'you spend weekends at the track.',
+                    'it\'s exhausting.',
+                    'it\'s exhilarating.',
+                    'you learn things.',
+                    'the team wins.',
+                    'sometimes.',
+                    'you have a new family.',
+                    'greasy. loud. perfect.'
+                ]
+            },
+            {
+                text: 'focus on the garage',
+                effect: null,
+                followup: [
+                    '"my garage needs me."',
+                    'they understand.',
+                    'you watch them race once.',
+                    'from the stands.',
+                    'you wonder what if.',
+                    'but the garage is enough.',
+                    'it has to be.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'tv_show_feature',
+        triggerReputation: 90,
+        triggerOnce: true,
+        text: [
+            'a tv producer calls.',
+            '"we\'re doing a show about mechanics."',
+            '"we want to feature your garage."',
+            '"it\'s good publicity."',
+            '"and we pay €500."'
+        ],
+        choices: [
+            {
+                text: 'do the show',
+                effect: { money: 500, reputation: 20 },
+                followup: [
+                    'cameras everywhere.',
+                    'they stage things.',
+                    '"can you look more greasy?"',
+                    'the episode airs.',
+                    'you look ridiculous.',
+                    'but business doubles.',
+                    'dignity is overrated.',
+                    'sometimes.'
+                ]
+            },
+            {
+                text: 'decline',
+                effect: null,
+                followup: [
+                    '"i\'m not a tv personality."',
+                    '"i\'m a mechanic."',
+                    'they find someone else.',
+                    'you see the show.',
+                    'it\'s terrible.',
+                    'you made the right call.',
+                    'probably.'
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'franchise_offer',
+        triggerReputation: 80,
+        triggerOnce: true,
+        text: [
+            'a national chain wants to buy you out.',
+            '"we\'ll keep the name," they say.',
+            '"you\'ll get a percentage."',
+            '"and a signing bonus."',
+            '€50,000.',
+            'that\'s a lot of money.'
+        ],
+        choices: [
+            {
+                text: 'refuse - stay independent',
+                effect: { reputation: 15 },
+                followup: [
+                    '"this garage is mine."',
+                    '"it stays that way."',
+                    'they leave.',
+                    'you look around.',
+                    'the lift. the tools. the oil stains.',
+                    'yours.',
+                    'all yours.',
+                    'that\'s worth more than money.'
+                ]
+            },
+            {
+                text: 'negotiate a partnership',
+                effect: { money: 25000, reputation: -5 },
+                followup: [
+                    'you work out a deal.',
+                    'they help with marketing.',
+                    'you keep control.',
+                    'mostly.',
+                    'the money helps.',
+                    'but something is different.',
+                    'you try not to think about it.'
+                ]
+            }
+        ]
     }
 ];

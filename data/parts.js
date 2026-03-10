@@ -855,6 +855,116 @@ const PARTS = [
     },
 
     // ═══════════════════════════════════════════
+    // Engine Assemblies (for engine swaps)
+    // ═══════════════════════════════════════════
+    {
+        id: 'engine_4cyl_standard',
+        name: '4-cylinder engine (standard)',
+        category: 'engine',
+        cost: 850,
+        deliveryDays: 5,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'engine_4cyl_turbo',
+        name: '4-cylinder turbo engine',
+        category: 'engine',
+        cost: 1500,
+        deliveryDays: 7,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'engine_v6',
+        name: 'V6 engine',
+        category: 'engine',
+        cost: 2200,
+        deliveryDays: 7,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'engine_v8',
+        name: 'V8 engine',
+        category: 'engine',
+        cost: 3500,
+        deliveryDays: 10,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'engine_diesel_4cyl',
+        name: '4-cylinder diesel engine',
+        category: 'engine',
+        cost: 1800,
+        deliveryDays: 7,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'engine_diesel_v6',
+        name: 'V6 diesel engine',
+        category: 'engine',
+        cost: 3200,
+        deliveryDays: 10,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'engine_rotary',
+        name: 'rotary engine (Wankel)',
+        category: 'engine',
+        cost: 2800,
+        deliveryDays: 14,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'engine_electric_motor',
+        name: 'electric motor conversion kit',
+        category: 'engine',
+        cost: 5500,
+        deliveryDays: 14,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'engine_swap_kit',
+        name: 'engine swap kit (mounts, hoses, wiring)',
+        category: 'engine',
+        cost: 350,
+        deliveryDays: 3,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'engine_wiring_harness',
+        name: 'engine wiring harness',
+        category: 'engine',
+        cost: 180,
+        deliveryDays: 3,
+        commonStock: false
+    },
+    {
+        id: 'ecu_engine',
+        name: 'engine control unit (ECU)',
+        category: 'engine',
+        cost: 450,
+        deliveryDays: 4,
+        commonStock: false
+    },
+    {
+        id: 'engine_conversion_parts',
+        name: 'engine conversion parts bundle',
+        category: 'engine',
+        cost: 550,
+        deliveryDays: 5,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+
+    // ═══════════════════════════════════════════
     // Performance (turbo, tuning parts)
     // ═══════════════════════════════════════════
     {
@@ -927,6 +1037,420 @@ const PARTS = [
         category: 'performance',
         cost: 350,
         deliveryDays: 0,
+        commonStock: false
+    },
+
+    // ═══════════════════════════════════════════
+    // Drivetrain & Differential
+    // ═══════════════════════════════════════════
+    {
+        id: 'differential',
+        name: 'differential',
+        category: 'transmission',
+        cost: 380,
+        deliveryDays: 5,
+        commonStock: false
+    },
+    {
+        id: 'limited_slip_diff',
+        name: 'limited slip differential (LSD)',
+        category: 'transmission',
+        cost: 650,
+        deliveryDays: 7,
+        commonStock: false
+    },
+    {
+        id: 'driveshaft',
+        name: 'driveshaft',
+        category: 'transmission',
+        cost: 220,
+        deliveryDays: 3,
+        commonStock: false
+    },
+    {
+        id: 'axle_shaft',
+        name: 'axle shaft',
+        category: 'transmission',
+        cost: 150,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'transfer_case',
+        name: 'transfer case (4WD)',
+        category: 'transmission',
+        cost: 450,
+        deliveryDays: 5,
+        commonStock: false
+    },
+
+    // ═══════════════════════════════════════════
+    // Fuel System (expanded)
+    // ═══════════════════════════════════════════
+    {
+        id: 'fuel_tank',
+        name: 'fuel tank',
+        category: 'engine',
+        cost: 280,
+        deliveryDays: 4,
+        commonStock: false
+    },
+    {
+        id: 'fuel_line',
+        name: 'fuel line',
+        category: 'engine',
+        cost: 35,
+        deliveryDays: 1,
+        commonStock: true
+    },
+    {
+        id: 'fuel_pressure_regulator',
+        name: 'fuel pressure regulator',
+        category: 'engine',
+        cost: 65,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'fuel_rail',
+        name: 'fuel rail',
+        category: 'engine',
+        cost: 120,
+        deliveryDays: 3,
+        commonStock: false
+    },
+    {
+        id: 'charcoal_canister',
+        name: 'charcoal canister (EVAP)',
+        category: 'engine',
+        cost: 85,
+        deliveryDays: 2,
+        commonStock: false
+    },
+
+    // ═══════════════════════════════════════════
+    // Cooling System (expanded)
+    // ═══════════════════════════════════════════
+    {
+        id: 'radiator_cap',
+        name: 'radiator cap',
+        category: 'engine',
+        cost: 8,
+        deliveryDays: 0,
+        commonStock: true
+    },
+    {
+        id: 'coolant_reservoir',
+        name: 'coolant reservoir',
+        category: 'engine',
+        cost: 35,
+        deliveryDays: 1,
+        commonStock: true
+    },
+    {
+        id: 'fan_clutch',
+        name: 'fan clutch',
+        category: 'engine',
+        cost: 75,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'electric_fan',
+        name: 'electric cooling fan',
+        category: 'engine',
+        cost: 120,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'heater_control_valve',
+        name: 'heater control valve',
+        category: 'climate',
+        cost: 35,
+        deliveryDays: 1,
+        commonStock: true
+    },
+
+    // ═══════════════════════════════════════════
+    // Ignition System (expanded)
+    // ═══════════════════════════════════════════
+    {
+        id: 'distributor',
+        name: 'distributor',
+        category: 'engine',
+        cost: 95,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'distributor_cap',
+        name: 'distributor cap & rotor',
+        category: 'engine',
+        cost: 35,
+        deliveryDays: 1,
+        commonStock: true
+    },
+    {
+        id: 'spark_plug_wires',
+        name: 'spark plug wire set',
+        category: 'engine',
+        cost: 45,
+        deliveryDays: 1,
+        commonStock: true
+    },
+    {
+        id: 'ignition_module',
+        name: 'ignition control module',
+        category: 'electrical',
+        cost: 85,
+        deliveryDays: 2,
+        commonStock: false
+    },
+
+    // ═══════════════════════════════════════════
+    // Body & Trim
+    // ═══════════════════════════════════════════
+    {
+        id: 'side_mirror',
+        name: 'side mirror',
+        category: 'electrical',
+        cost: 65,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'door_handle',
+        name: 'door handle',
+        category: 'electrical',
+        cost: 35,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'window_regulator',
+        name: 'window regulator',
+        category: 'electrical',
+        cost: 85,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'door_lock_actuator',
+        name: 'door lock actuator',
+        category: 'electrical',
+        cost: 55,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'windshield',
+        name: 'windshield',
+        category: 'wheels',
+        cost: 220,
+        deliveryDays: 3,
+        commonStock: false
+    },
+    {
+        id: 'side_window',
+        name: 'side window',
+        category: 'wheels',
+        cost: 120,
+        deliveryDays: 3,
+        commonStock: false
+    },
+
+    // ═══════════════════════════════════════════
+    // Safety Systems
+    // ═══════════════════════════════════════════
+    {
+        id: 'airbag',
+        name: 'airbag module',
+        category: 'electrical',
+        cost: 280,
+        deliveryDays: 4,
+        commonStock: false
+    },
+    {
+        id: 'airbag_sensor',
+        name: 'airbag crash sensor',
+        category: 'electrical',
+        cost: 65,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'seatbelt_tensioner',
+        name: 'seatbelt tensioner',
+        category: 'electrical',
+        cost: 85,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'abs_module',
+        name: 'ABS control module',
+        category: 'brakes',
+        cost: 320,
+        deliveryDays: 4,
+        commonStock: false
+    },
+    {
+        id: 'abs_pump',
+        name: 'ABS pump',
+        category: 'brakes',
+        cost: 280,
+        deliveryDays: 4,
+        commonStock: false
+    },
+
+    // ═══════════════════════════════════════════
+    // Sensors (expanded)
+    // ═══════════════════════════════════════════
+    {
+        id: 'knock_sensor',
+        name: 'knock sensor',
+        category: 'engine',
+        cost: 45,
+        deliveryDays: 1,
+        commonStock: false
+    },
+    {
+        id: 'oil_pressure_sensor',
+        name: 'oil pressure sensor',
+        category: 'engine',
+        cost: 35,
+        deliveryDays: 1,
+        commonStock: true
+    },
+    {
+        id: 'oil_level_sensor',
+        name: 'oil level sensor',
+        category: 'engine',
+        cost: 45,
+        deliveryDays: 1,
+        commonStock: false
+    },
+    {
+        id: 'intake_air_temp_sensor',
+        name: 'intake air temperature sensor',
+        category: 'engine',
+        cost: 28,
+        deliveryDays: 1,
+        commonStock: true
+    },
+    {
+        id: 'throttle_body',
+        name: 'throttle body',
+        category: 'engine',
+        cost: 180,
+        deliveryDays: 3,
+        commonStock: false
+    },
+    {
+        id: 'egr_valve',
+        name: 'EGR valve',
+        category: 'engine',
+        cost: 120,
+        deliveryDays: 2,
+        commonStock: false
+    },
+    {
+        id: 'purge_valve',
+        name: 'purge valve (EVAP)',
+        category: 'engine',
+        cost: 45,
+        deliveryDays: 1,
+        commonStock: true
+    },
+    {
+        id: 'vehicle_speed_sensor',
+        name: 'vehicle speed sensor',
+        category: 'electrical',
+        cost: 45,
+        deliveryDays: 1,
+        commonStock: false
+    },
+    {
+        id: 'transmission_speed_sensor',
+        name: 'transmission speed sensor',
+        category: 'transmission',
+        cost: 55,
+        deliveryDays: 2,
+        commonStock: false
+    },
+
+    // ═══════════════════════════════════════════
+    // Hybrid/EV Components
+    // ═══════════════════════════════════════════
+    {
+        id: 'hybrid_battery',
+        name: 'hybrid battery pack',
+        category: 'electrical',
+        cost: 2200,
+        deliveryDays: 10,
+        commonStock: false
+    },
+    {
+        id: 'inverter',
+        name: 'hybrid inverter',
+        category: 'electrical',
+        cost: 1500,
+        deliveryDays: 7,
+        commonStock: false
+    },
+    {
+        id: 'hybrid_coolant_pump',
+        name: 'hybrid system coolant pump',
+        category: 'engine',
+        cost: 280,
+        deliveryDays: 3,
+        commonStock: false
+    },
+
+    // ═══════════════════════════════════════════
+    // Transmission (expanded)
+    // ═══════════════════════════════════════════
+    {
+        id: 'automatic_transmission',
+        name: 'automatic transmission',
+        category: 'transmission',
+        cost: 1800,
+        deliveryDays: 7,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'manual_transmission',
+        name: 'manual transmission',
+        category: 'transmission',
+        cost: 1200,
+        deliveryDays: 5,
+        commonStock: false,
+        requiresEngineHoist: true
+    },
+    {
+        id: 'transmission_filter',
+        name: 'transmission filter',
+        category: 'transmission',
+        cost: 25,
+        deliveryDays: 1,
+        commonStock: true
+    },
+    {
+        id: 'torque_converter',
+        name: 'torque converter',
+        category: 'transmission',
+        cost: 280,
+        deliveryDays: 4,
+        commonStock: false
+    },
+    {
+        id: 'cv_joint',
+        name: 'CV joint',
+        category: 'transmission',
+        cost: 85,
+        deliveryDays: 2,
         commonStock: false
     }
 ];
