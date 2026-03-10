@@ -2834,7 +2834,7 @@ const CUSTOMERS = [
         },
         outcomes: {
             correct: {
-                payment: 850,
+                payment: 950,
                 reputationChange: 18,
                 dialogue: [
                     'new turbo.',
@@ -6610,7 +6610,7 @@ const CUSTOMERS = [
         },
         outcomes: {
             correct: {
-                payment: 1500,
+                payment: 2350,
                 reputationChange: 18,
                 dialogue: [
                     'three days of work.',
@@ -6866,7 +6866,7 @@ const CUSTOMERS = [
         },
         outcomes: {
             correct: {
-                payment: 3800,
+                payment: 6500,
                 reputationChange: 28,
                 dialogue: [
                     'two weeks of work.',
@@ -7113,7 +7113,7 @@ const CUSTOMERS = [
         },
         outcomes: {
             correct: {
-                payment: 2200,
+                payment: 2800,
                 reputationChange: 20,
                 dialogue: [
                     'you replace the bad module.',
